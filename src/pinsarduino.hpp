@@ -68,6 +68,7 @@ uint8_t volatile * const portAddressFromPinNumber[] = {
  *
  * This however can also be achieved by XOR-ing the respective PORTxn with 0b1 - so it is prohibited
  * here by declaring the volatile value pointed to as const [i.e. not constant but unmodifyable].
+ * This might not be as fast as a single-instruction "sbi PINx, n" - but backward-compatible.
  */
 
 uint8_t const volatile * const pinAddressFromPinNumber[] = {
