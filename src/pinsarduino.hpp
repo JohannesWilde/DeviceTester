@@ -116,27 +116,50 @@ uint8_t volatile * const ddAddressFromPinNumber[] = {
     &DDRC,
 };
 
+uint8_t const bitNumberFromPinNumber[] = {
+    PORTD0, /* 0, port D */
+    PORTD1,
+    PORTD2,
+    PORTD3,
+    PORTD4,
+    PORTD5,
+    PORTD6,
+    PORTD7,
+    PORTB0, /* 8, port B */
+    PORTB1,
+    PORTB2,
+    PORTB3,
+    PORTB4,
+    PORTB5,
+    PORTC0, /* 14, port C */
+    PORTC1,
+    PORTC2,
+    PORTC3,
+    PORTC4,
+    PORTC5,
+};
+
 uint8_t const bitMaskFromPinNumber[] = {
-    _BV(PORTD0), /* 0, port D */
-    _BV(PORTD1),
-    _BV(PORTD2),
-    _BV(PORTD3),
-    _BV(PORTD4),
-    _BV(PORTD5),
-    _BV(PORTD6),
-    _BV(PORTD7),
-    _BV(PORTB0), /* 8, port B */
-    _BV(PORTB1),
-    _BV(PORTB2),
-    _BV(PORTB3),
-    _BV(PORTB4),
-    _BV(PORTB5),
-    _BV(PORTC0), /* 14, port C */
-    _BV(PORTC1),
-    _BV(PORTC2),
-    _BV(PORTC3),
-    _BV(PORTC4),
-    _BV(PORTC5),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[0])), /* 0, port D */
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[1])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[2])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[3])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[4])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[5])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[6])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[7])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[0])), /* 8, port B */
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[1])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[2])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[3])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[4])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[5])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[0])), /* 14, port C */
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[1])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[2])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[3])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[4])),
+    static_cast<uint8_t const>(_BV(bitNumberFromPinNumber[5])),
 };
 
 #endif // PINSARDUINO_H
