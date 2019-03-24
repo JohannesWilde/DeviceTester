@@ -22,7 +22,7 @@ enum {
     A5 = 19
 };
 
-uint8_t volatile * const PROGMEM portAddressFromPinNumber[] = {
+uint8_t volatile * const portAddressFromPinNumber[] = {
     &PORTD, /* 0 */
     &PORTD,
     &PORTD,
@@ -45,7 +45,18 @@ uint8_t volatile * const PROGMEM portAddressFromPinNumber[] = {
     &PORTC,
 };
 
-uint8_t volatile * const PROGMEM pinAddressFromPinNumber[] = {
+
+/*
+ * ATmega328p Manual:
+ * "18.2.2 Toggling the Pin
+ * Writing a '1' to PINxn toggles the value of PORTxn, independent on the value of DDRxn. The SBI
+ * instruction can be used to toggle one single bit in a port."
+ *
+ * This however can also be achieved by XOR-ing the respective PORTxn with 0b1 - so it is prohibited
+ * here by declaring the volatile value pointed to as const [i.e. not constant but unmodifyable].
+ */
+
+uint8_t const volatile * const pinAddressFromPinNumber[] = {
     &PIND, /* 0 */
     &PIND,
     &PIND,
@@ -68,7 +79,7 @@ uint8_t volatile * const PROGMEM pinAddressFromPinNumber[] = {
     &PINC,
 };
 
-uint8_t volatile * const PROGMEM ddAddressFromPinNumber[] = {
+uint8_t volatile * const ddAddressFromPinNumber[] = {
     &DDRD, /* 0 */
     &DDRD,
     &DDRD,
@@ -91,7 +102,7 @@ uint8_t volatile * const PROGMEM ddAddressFromPinNumber[] = {
     &DDRC,
 };
 
-uint8_t const PROGMEM bitMaskFromPinNumber[] = {
+uint8_t const bitMaskFromPinNumber[] = {
     _BV(PORTD0), /* 0, port D */
     _BV(PORTD1),
     _BV(PORTD2),
