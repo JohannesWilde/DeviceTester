@@ -21,7 +21,8 @@ cmake_minimum_required(VERSION 2.8)
 ##########################################################################
 set(AVR_UPLOADTOOL avrdude)
 set(AVR_PROGRAMMER arduino)
-set(AVR_UPLOADTOOL_PORT usb)
+set(AVR_UPLOADTOOL_PORT /dev/ttyUSB0)
+set(AVR_UPLOADTOOL_BAUDRATE 115200)
 
 ##########################################################################
 # AVR and fuses needs to be set
@@ -138,7 +139,6 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 # - the code-highlighter of QtCreator however does not understand above conditions,
 # thus here it is again.
 include_directories(/usr/lib/avr/include)
-#link_directories(/usr/lib/avr/lib)
 
 
 ##########################################################################
