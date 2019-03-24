@@ -16,6 +16,17 @@ public:
                   AvrPin const * const invertedOutputEnable,
                   AvrPin const * const invertedShiftRegisterClear);
 
+    void enableOutput() const;
+    void disableOutput() const;
+    void clearShiftRegister() const;
+    void showShiftRegister() const;
+    // This methods expects an array that contains at least ShiftRegister::length bits.
+    // The least significant bit [LSB, 0x01] of the least significant byte [LSBy,
+    // bitStreamArray[0]] in the array will be at q0 of the first connected shift-register.
+    // The most significant bit [MSB] of the most significant byte [MSBy] will correspondingly
+    // be shifted in first.
+    void shiftInBits(uint8_t const * const bitStreamArray) const;
+
 private:
     // the "length" describes the number of ouput pins for the shift-register instance [which might
     // get quite big, if several small shift-registers are concatenated and used as one].

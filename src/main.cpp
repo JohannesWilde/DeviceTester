@@ -23,10 +23,11 @@
 #endif
 
 #include <avr/io.h>
-#include <util/delay.h>
 #include "arduinouno.hpp"
 #include "devicetester.hpp"
 #include "shiftregister.hpp"
+
+#include "avrpin.hpp"
 
 
 //enum {
@@ -75,6 +76,18 @@ int main()
 {
     ArduinoUno arduinoUno;
 
+    arduinoUno.getPin(ArduinoUno::A3)->setType(AvrPin::OUTPUT_HIGH); // VCC
+    arduinoUno.getPin(ArduinoUno::A2)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::D10)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::D9)->setType(AvrPin::OUTPUT_LOW); // GND
+    arduinoUno.getPin(ArduinoUno::D8)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::D7)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::D6)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::D5)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::D4)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::D3)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::D2)->setType(AvrPin::INPUT);
+
     DeviceTester deviceTester(arduinoUno.getPin(ArduinoUno::A4),    // button
                               arduinoUno.getPin(ArduinoUno::A5)     // leds
                               );
@@ -88,15 +101,9 @@ int main()
                                 arduinoUno.getPin(ArduinoUno::D11)  // invertedShiftRegisterClear
                                 );
 
-//    // Set bit 7 of PORTC as output
-//    *ddAddressFromPinNumber[LED_BUILTIN] |= bitMaskFromPinNumber[LED_BUILTIN];
     while (true)
     {
-//        // Invert the bit 7 of PORTC
-//        *portAddressFromPinNumber[LED_BUILTIN] ^= bitMaskFromPinNumber[LED_BUILTIN];
-
-//        // Wait 500ms (the leb connectod to the bit 7 of PORTC will blink at 1Hz)
-//        _delay_ms(500);
+        // do nothing
     }
     return 0;
 }
