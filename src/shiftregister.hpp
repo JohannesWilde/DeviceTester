@@ -38,6 +38,9 @@ private:
     AvrPin const * const showRegisterClock;
     AvrPin const * const invertedOutputEnable;
     AvrPin const * const invertedShiftRegisterClear;
+
+    void lowHighClock(AvrPin const * const avrPin) const;
+    void highLowClock(AvrPin const * const avrPin) const;
 };
 
 #endif // SHIFTREGISTER_H

@@ -71,6 +71,8 @@
 //    SHIFT_REGISTER_LENGTH = 8
 //};
 
+uint8_t arrayToShow[1] = { 0xff };
+
 
 int main()
 {
@@ -93,7 +95,7 @@ int main()
                               );
     deviceTester.enableLeds();
 
-    ShiftRegister shiftRegister(8,
+    ShiftRegister shiftRegister(6,                                  // length
                                 arduinoUno.getPin(ArduinoUno::A1),  // serialInput
                                 arduinoUno.getPin(ArduinoUno::D12), // shiftRegisterClock
                                 arduinoUno.getPin(ArduinoUno::D13), // showRegisterClock
@@ -101,9 +103,17 @@ int main()
                                 arduinoUno.getPin(ArduinoUno::D11)  // invertedShiftRegisterClear
                                 );
 
+    deviceTester.waitForButtonPressAndRelease();
+    shiftRegister.enableOutput();
+
     while (true)
     {
-        // do nothing
+        shiftRegister.shiftInBits(arrayToShow);
+        shiftRegister.showShiftRegister();
+        deviceTester.waitForButtonPressAndRelease();
+        --arrayToShow[0];
     }
+
+    shiftRegister.disableOutput();
     return 0;
 }
