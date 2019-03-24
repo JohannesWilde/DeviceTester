@@ -13,12 +13,12 @@ public:
            uint8_t const bitNumber);
 
     void setType(PinType const pinType) const;
-    uint8_t readPort() const;
-    uint8_t readDdr() const;
-    uint8_t readPin() const;
+    PinState readPort() const;
+    PinState readDdr() const;
+    PinState readPin() const;
 
 protected:
-    inline uint8_t checkPinInRegister_(uint8_t const registerValue) const;
+    inline PinState checkPinInRegister_(uint8_t const registerValue) const;
 
 private:
     AvrRegister const * const avrRegister;

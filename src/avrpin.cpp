@@ -15,22 +15,22 @@ void AvrPin::setType(PinType const pinType) const
     avrRegister->setType(pinType, bitMask);
 }
 
-uint8_t AvrPin::readPort() const
+AvrPin::PinState AvrPin::readPort() const
 {
     return checkPinInRegister_(avrRegister->readPort());
 }
 
-uint8_t AvrPin::readDdr() const
+AvrPin::PinState AvrPin::readDdr() const
 {
     return checkPinInRegister_(avrRegister->readDdr());
 }
 
-uint8_t AvrPin::readPin() const
+AvrPin::PinState AvrPin::readPin() const
 {
     return checkPinInRegister_(avrRegister->readPin());
 }
 
-uint8_t AvrPin::checkPinInRegister_(uint8_t const registerValue) const
+AvrPin::PinState AvrPin::checkPinInRegister_(uint8_t const registerValue) const
 {
-    return ((registerValue & bitMask) != 0) ? 0x01 : 0x00;
+    return ((registerValue & bitMask) != 0) ? AvrPin::HIGH : AvrPin::LOW;
 }

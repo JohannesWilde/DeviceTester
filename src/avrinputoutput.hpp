@@ -19,6 +19,13 @@ public:
         INPUT_PULLUP
     };
 
+    // don't change these PinState-values, as they are the ones hardcoded in the
+    // chip and currently not transformed in the reading methods.
+    enum PinState {
+        LOW=0,
+        HIGH=1
+    };
+
     /*
      * The following methods are expected to be implemented by childs of this class.
      *
