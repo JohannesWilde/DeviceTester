@@ -17,27 +17,23 @@
 //      (D 8) PB0 14|    |15  PB1 (D 9) PWM
 //                  +----+
 
-#define LED_TOP_1 8             // Indirektes Licht 1
-#define LED_TOP_2 7             // Indirektes Licht 2
-#define LED_TOP_3 6             // Indirektes Licht 3
-#define LED_BOTTOM 5            // Direktes Licht
-#define POTI_TOP_LEVEL_RANGE 3  // Hub des indirekten Lichts
-#define POTI_TOP_LEVEL_MAX 2    // Grundhelligkeit des indirekten Lichts
-#define POTI_BOTTOM_LEVEL_MAX 1 // Grundhelligkeit des direkten Lichts
-
-//#define __AVR_ATmega328P__   - find out, hwere this is defined before!
+// this is only for the QtCreator to find the correct highlighting - this is already defined somewhere before
+#ifndef __AVR_ATmega328P__
+#define __AVR_ATmega328P__
+#endif
 
 #include <avr/io.h>
 #include <util/delay.h>
+#include "pinsarduino.hpp
 
 int main()
 {
     // Set bit 7 of PORTC as output
-    DDRB=0x01 << 5;
+    *ddAddressFromPinNumber[LED_BUILTIN] |= bitMaskFromPinNumber[LED_BUILTIN];
     while (true)
     {
         // Invert the bit 7 of PORTC
-        PORTB = PORTB ^ (0x01 << 5);
+        *portAddressFromPinNumber[LED_BUILTIN] ^= bitMaskFromPinNumber[LED_BUILTIN];
 
         // Wait 500ms (the leb connectod to the bit 7 of PORTC will blink at 1Hz)
         _delay_ms(500);
