@@ -24,19 +24,79 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "pinsarduino.hpp
+#include "arduinouno.hpp"
+#include "devicetester.hpp"
+#include "shiftregister.hpp"
+
+
+//enum {
+//    DEVICE_TESTER_PIN_0 = D2,
+//    DEVICE_TESTER_PIN_1 = D3,
+//    DEVICE_TESTER_PIN_2 = D4,
+//    DEVICE_TESTER_PIN_3 = D5,
+//    DEVICE_TESTER_PIN_4 = D6,
+//    DEVICE_TESTER_PIN_5 = D7,
+//    DEVICE_TESTER_PIN_6 = D8,
+//    DEVICE_TESTER_PIN_7 = D9,
+//    DEVICE_TESTER_PIN_8 = D10,
+//    DEVICE_TESTER_PIN_9 = D11,
+//    DEVICE_TESTER_PIN_10 = D12,
+//    DEVICE_TESTER_PIN_11 = D13,
+//    DEVICE_TESTER_PIN_12 = A0,
+//    DEVICE_TESTER_PIN_13 = A1,
+//    DEVICE_TESTER_PIN_14 = A2,
+//    DEVICE_TESTER_PIN_15 = A3,
+//    DEVICE_TESTER_BUTTON = ArduinoUno::A4,
+//    DEVICE_TESTER_LEDS = ArduinoUno::A5
+//};
+
+//enum {
+//    SHIFT_REGISTER_Q1 = D2,
+//    SHIFT_REGISTER_Q2 = D3,
+//    SHIFT_REGISTER_Q3 = D4,
+//    SHIFT_REGISTER_Q4 = D5,
+//    SHIFT_REGISTER_Q5 = D6,
+//    SHIFT_REGISTER_Q6 = D7,
+//    SHIFT_REGISTER_Q7 = D8,
+//    SHIFT_REGISTER_GND = D9,
+//    SHIFT_REGISTER_Q7S = D10,
+//    SHIFT_REGISTER_NSRCLR = D11,
+//    SHIFT_REGISTER_SRCLK = D12,
+//    SHIFT_REGISTER_RCLK = D13,
+//    SHIFT_REGISTER_NOE = A0,
+//    SHIFT_REGISTER_SER = A1,
+//    SHIFT_REGISTER_Q0 = A2,
+//    SHIFT_REGISTER_VCC = A3,
+//    SHIFT_REGISTER_LENGTH = 8
+//};
+
 
 int main()
 {
-    // Set bit 7 of PORTC as output
-    *ddAddressFromPinNumber[LED_BUILTIN] |= bitMaskFromPinNumber[LED_BUILTIN];
+    ArduinoUno arduinoUno;
+
+    DeviceTester deviceTester(arduinoUno.getPin(ArduinoUno::A4),    // button
+                              arduinoUno.getPin(ArduinoUno::A5)     // leds
+                              );
+    deviceTester.enableLeds();
+
+    ShiftRegister shiftRegister(8,
+                                arduinoUno.getPin(ArduinoUno::A1),  // serialInput
+                                arduinoUno.getPin(ArduinoUno::D12), // shiftRegisterClock
+                                arduinoUno.getPin(ArduinoUno::D13), // showRegisterClock
+                                arduinoUno.getPin(ArduinoUno::A0),  // invertedOutputEnable
+                                arduinoUno.getPin(ArduinoUno::D11)  // invertedShiftRegisterClear
+                                );
+
+//    // Set bit 7 of PORTC as output
+//    *ddAddressFromPinNumber[LED_BUILTIN] |= bitMaskFromPinNumber[LED_BUILTIN];
     while (true)
     {
-        // Invert the bit 7 of PORTC
-        *portAddressFromPinNumber[LED_BUILTIN] ^= bitMaskFromPinNumber[LED_BUILTIN];
+//        // Invert the bit 7 of PORTC
+//        *portAddressFromPinNumber[LED_BUILTIN] ^= bitMaskFromPinNumber[LED_BUILTIN];
 
-        // Wait 500ms (the leb connectod to the bit 7 of PORTC will blink at 1Hz)
-        _delay_ms(500);
+//        // Wait 500ms (the leb connectod to the bit 7 of PORTC will blink at 1Hz)
+//        _delay_ms(500);
     }
     return 0;
 }
