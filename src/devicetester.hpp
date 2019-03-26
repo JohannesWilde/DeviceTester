@@ -61,6 +61,10 @@ public:
     // wait until button was pressed at least once
     void waitForButtonPress() const;
 
+    bool checkDevicePinPin(uint8_t const pinNumber, AvrInputOutput::PinState const pinState) const;
+    bool checkDevicePinPort(uint8_t const pinNumber, AvrInputOutput::PinState const pinState) const;
+    bool checkDevicePinDdr(uint8_t const pinNumber, AvrInputOutput::PinState const pinState) const;
+
 private:
     AvrPin const * const pinButton_;
     AvrPin const * const pinLed_;

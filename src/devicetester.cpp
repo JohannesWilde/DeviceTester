@@ -116,3 +116,18 @@ void DeviceTester::waitForButtonPress() const
     }
     while (!(AvrPin::LOW == curState));
 }
+
+bool DeviceTester::checkDevicePinPin(uint8_t const pinNumber, AvrInputOutput::PinState const pinState) const
+{
+    return ( pinsDevice_[pinNumber]->readPin() == pinState );
+}
+
+bool DeviceTester::checkDevicePinPort(uint8_t const pinNumber, AvrInputOutput::PinState const pinState) const
+{
+    return ( pinsDevice_[pinNumber]->readPort() == pinState );
+}
+
+bool DeviceTester::checkDevicePinDdr(uint8_t const pinNumber, AvrInputOutput::PinState const pinState) const
+{
+    return ( pinsDevice_[pinNumber]->readDdr() == pinState );
+}
