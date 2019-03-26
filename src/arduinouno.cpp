@@ -25,7 +25,7 @@ AvrRegister const ArduinoUno::avrRegisters[] =
 {
     AvrRegister(&avrInternalRegisters[REGISTER_PORTB], &avrInternalRegisters[REGISTER_DDRB], &avrInternalRegisters[REGISTER_PINB]),
     AvrRegister(&avrInternalRegisters[REGISTER_PORTC], &avrInternalRegisters[REGISTER_DDRC], &avrInternalRegisters[REGISTER_PINC]),
-    AvrRegister(&avrInternalRegisters[REGISTER_PORTD], &avrInternalRegisters[REGISTER_DDRD], &avrInternalRegisters[REGISTER_PINC]),
+    AvrRegister(&avrInternalRegisters[REGISTER_PORTD], &avrInternalRegisters[REGISTER_DDRD], &avrInternalRegisters[REGISTER_PIND]),
 };
 
 AvrPin const ArduinoUno::avrPins[] =
