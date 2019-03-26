@@ -41,7 +41,7 @@ DeviceTester::DeviceTester(AvrPin const * const button,
 {
     // set pins to out- or inputs
     pinButton_->setType(AvrPin::INPUT_PULLUP);
-    pinLed_->setType(AvrPin::OUTPUT_LOW);
+    disableLeds();
     pinsDevice_[0] = devicePin0;
     pinsDevice_[0]->setType(devicePin0Type);
     pinsDevice_[1] = devicePin1;
@@ -96,7 +96,7 @@ void DeviceTester::waitForButtonPressAndRelease() const
         // try to circumvent debounce by waiting a small amount of time between asking again
         _delay_ms(10);
         curState = pinButton_->readPin();
-        if (curState == 0x00)
+        if (curState == AvrPin::LOW)
         {
             wasLowAtLeastOnce = true;
         }
