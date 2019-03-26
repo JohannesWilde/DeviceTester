@@ -8,6 +8,8 @@
 #include "devicetester.hpp"
 #include "shiftregister.hpp"
 
+#include "avrinternalregister.hpp"
+#include "avrregister.hpp"
 #include "avrpin.hpp"
 
 
@@ -58,22 +60,33 @@ int main()
 {
     ArduinoUno arduinoUno;
 
-    arduinoUno.getPin(ArduinoUno::A3)->setType(AvrPin::OUTPUT_HIGH); // VCC
-    arduinoUno.getPin(ArduinoUno::A2)->setType(AvrPin::INPUT);       // Q0
-    arduinoUno.getPin(ArduinoUno::D10)->setType(AvrPin::INPUT);      // Q7s
-    arduinoUno.getPin(ArduinoUno::D9)->setType(AvrPin::OUTPUT_LOW);  // GND
-    arduinoUno.getPin(ArduinoUno::D8)->setType(AvrPin::INPUT);       // Q7
-    arduinoUno.getPin(ArduinoUno::D7)->setType(AvrPin::INPUT);       // Q6
-    arduinoUno.getPin(ArduinoUno::D6)->setType(AvrPin::INPUT);       // Q5
-    arduinoUno.getPin(ArduinoUno::D5)->setType(AvrPin::INPUT);       // Q4
-    arduinoUno.getPin(ArduinoUno::D4)->setType(AvrPin::INPUT);       // Q3
-    arduinoUno.getPin(ArduinoUno::D3)->setType(AvrPin::INPUT);       // Q2
-    arduinoUno.getPin(ArduinoUno::D2)->setType(AvrPin::INPUT);       // Q1
+//    // dummy register for unused parameters
+//    uint8_t dummyRegister;
+//    AvrInternalRegister const avrInternalRegisterDummy(&dummyRegister);
+//    AvrRegister const avrRegisterDummy(&avrInternalRegisterDummy, &avrInternalRegisterDummy, &avrInternalRegisterDummy);
+//    AvrPin const avrPinDummy(&avrRegisterDummy, static_cast<uint8_t>(~0x00));
 
     DeviceTester deviceTester(arduinoUno.getPin(ArduinoUno::A4),    // button
-                              arduinoUno.getPin(ArduinoUno::A5)     // leds
+                              arduinoUno.getPin(ArduinoUno::A5),    // leds
+                              arduinoUno.getPin(ArduinoUno::D2), AvrPin::INPUT,   // pin0
+                              arduinoUno.getPin(ArduinoUno::D3), AvrPin::INPUT,
+                              arduinoUno.getPin(ArduinoUno::D4), AvrPin::INPUT,
+                              arduinoUno.getPin(ArduinoUno::D5), AvrPin::INPUT,
+                              arduinoUno.getPin(ArduinoUno::D6), AvrPin::INPUT,
+                              arduinoUno.getPin(ArduinoUno::D7), AvrPin::INPUT,
+                              arduinoUno.getPin(ArduinoUno::D8), AvrPin::INPUT,
+                              arduinoUno.getPin(ArduinoUno::D9), AvrPin::OUTPUT_LOW,
+                              arduinoUno.getPin(ArduinoUno::D10), AvrPin::INPUT,
+                              arduinoUno.getPin(ArduinoUno::D11), AvrPin::OUTPUT_LOW,
+                              arduinoUno.getPin(ArduinoUno::D12), AvrPin::OUTPUT_LOW,
+                              arduinoUno.getPin(ArduinoUno::D13), AvrPin::OUTPUT_LOW,
+                              arduinoUno.getPin(ArduinoUno::A0), AvrPin::OUTPUT_HIGH,
+                              arduinoUno.getPin(ArduinoUno::A1), AvrPin::OUTPUT_LOW,
+                              arduinoUno.getPin(ArduinoUno::A2), AvrPin::INPUT,
+                              arduinoUno.getPin(ArduinoUno::A3), AvrPin::OUTPUT_HIGH     // pin15
                               );
     deviceTester.enableLeds();
+
 
     ShiftRegister shiftRegister(6,                                  // length
                                 arduinoUno.getPin(ArduinoUno::A1),  // serialInput
