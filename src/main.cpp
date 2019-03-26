@@ -59,16 +59,16 @@ int main()
     ArduinoUno arduinoUno;
 
     arduinoUno.getPin(ArduinoUno::A3)->setType(AvrPin::OUTPUT_HIGH); // VCC
-    arduinoUno.getPin(ArduinoUno::A2)->setType(AvrPin::INPUT);
-    arduinoUno.getPin(ArduinoUno::D10)->setType(AvrPin::INPUT);
-    arduinoUno.getPin(ArduinoUno::D9)->setType(AvrPin::OUTPUT_LOW); // GND
-    arduinoUno.getPin(ArduinoUno::D8)->setType(AvrPin::INPUT);
-    arduinoUno.getPin(ArduinoUno::D7)->setType(AvrPin::INPUT);
-    arduinoUno.getPin(ArduinoUno::D6)->setType(AvrPin::INPUT);
-    arduinoUno.getPin(ArduinoUno::D5)->setType(AvrPin::INPUT);
-    arduinoUno.getPin(ArduinoUno::D4)->setType(AvrPin::INPUT);
-    arduinoUno.getPin(ArduinoUno::D3)->setType(AvrPin::INPUT);
-    arduinoUno.getPin(ArduinoUno::D2)->setType(AvrPin::INPUT);
+    arduinoUno.getPin(ArduinoUno::A2)->setType(AvrPin::INPUT);       // Q0
+    arduinoUno.getPin(ArduinoUno::D10)->setType(AvrPin::INPUT);      // Q7s
+    arduinoUno.getPin(ArduinoUno::D9)->setType(AvrPin::OUTPUT_LOW);  // GND
+    arduinoUno.getPin(ArduinoUno::D8)->setType(AvrPin::INPUT);       // Q7
+    arduinoUno.getPin(ArduinoUno::D7)->setType(AvrPin::INPUT);       // Q6
+    arduinoUno.getPin(ArduinoUno::D6)->setType(AvrPin::INPUT);       // Q5
+    arduinoUno.getPin(ArduinoUno::D5)->setType(AvrPin::INPUT);       // Q4
+    arduinoUno.getPin(ArduinoUno::D4)->setType(AvrPin::INPUT);       // Q3
+    arduinoUno.getPin(ArduinoUno::D3)->setType(AvrPin::INPUT);       // Q2
+    arduinoUno.getPin(ArduinoUno::D2)->setType(AvrPin::INPUT);       // Q1
 
     DeviceTester deviceTester(arduinoUno.getPin(ArduinoUno::A4),    // button
                               arduinoUno.getPin(ArduinoUno::A5)     // leds
