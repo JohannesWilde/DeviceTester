@@ -4,7 +4,6 @@
 add_avr_executable(
    main
    main.cpp
-   avrinternalregister.cpp
    avrregister.cpp
    avrpin.cpp
    arduinouno.cpp

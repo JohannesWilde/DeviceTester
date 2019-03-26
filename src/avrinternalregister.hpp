@@ -3,18 +3,31 @@
 
 #include <stdint.h>
 
+template<uint8_t volatile * const registerAddress>
 class AvrInternalRegister
 {
 public:
-    AvrInternalRegister(uint8_t volatile * const registerAddress);
+    AvrInternalRegister();
 
-    void setBitMask(uint8_t const bitMask) const;
-    void clearBitMask(uint8_t const bitMask) const;
-    void toggleBitMask(uint8_t const bitMask) const;
-    uint8_t readRegister() const;
+    void setBitMask(uint8_t const bitMask) const
+    {
+        *registerAddress |= bitMask;
+    }
 
-private:
-    uint8_t volatile * const registerAddress;
+    void clearBitMask(uint8_t const bitMask) const
+    {
+        *registerAddress &= ~bitMask;
+    }
+
+    void toggleBitMask(uint8_t const bitMask) const
+    {
+        *registerAddress ^= bitMask;
+    }
+
+    uint8_t readRegister() const
+    {
+        return *registerAddress;
+    }
 };
 
 #endif // AVRINTERNALREGISTER_H
