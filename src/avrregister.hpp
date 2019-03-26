@@ -1,5 +1,5 @@
-#ifndef AVRREGISTER_H
-#define AVRREGISTER_H
+#ifndef AVRREGISTER_HPP
+#define AVRREGISTER_HPP
 
 #include <stdint.h>
 #include <avrinputoutput.hpp>

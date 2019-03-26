@@ -1,5 +1,5 @@
-#ifndef SHIFTREGISTER_H
-#define SHIFTREGISTER_H
+#ifndef SHIFTREGISTER_HPP
+#define SHIFTREGISTER_HPP
 
 #include <stdint.h>
 

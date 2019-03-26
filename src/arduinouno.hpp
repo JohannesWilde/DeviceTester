@@ -17,8 +17,8 @@
 //      (D 8) PB0 14|    |15  PB1 (D 9) PWM
 //                  +----+
 
-#ifndef ARDUINOUNO_H
-#define ARDUINOUNO_H
+#ifndef ARDUINOUNO_HPP
+#define ARDUINOUNO_HPP
 
 // forward declarations
 class AvrInternalRegister;

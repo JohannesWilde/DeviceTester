@@ -1,5 +1,5 @@
-#ifndef DEVICETESTER_H
-#define DEVICETESTER_H
+#ifndef DEVICETESTER_HPP
+#define DEVICETESTER_HPP
 
 #include <stdint.h>
 #include "avrinputoutput.hpp"

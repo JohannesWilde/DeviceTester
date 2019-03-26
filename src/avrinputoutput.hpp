@@ -1,5 +1,5 @@
-#ifndef AVRINPUTOUTPUT_H
-#define AVRINPUTOUTPUT_H
+#ifndef AVRINPUTOUTPUT_HPP
+#define AVRINPUTOUTPUT_HPP
 
 #include <stdint.h>
 

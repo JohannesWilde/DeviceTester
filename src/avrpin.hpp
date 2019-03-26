@@ -1,5 +1,5 @@
-#ifndef AVRPIN_H
-#define AVRPIN_H
+#ifndef AVRPIN_HPP
+#define AVRPIN_HPP
 
 #include <stdint.h>
 #include "avrinputoutput.hpp"
