@@ -52,7 +52,6 @@
 //    SHIFT_REGISTER_LENGTH = 8
 //};
 
-uint8_t arrayToShow[1] = { 0xff };
 
 
 int main()
@@ -83,6 +82,8 @@ int main()
                                 arduinoUno.getPin(ArduinoUno::A0),  // invertedOutputEnable
                                 arduinoUno.getPin(ArduinoUno::D11)  // invertedShiftRegisterClear
                                 );
+
+    uint8_t arrayToShow[1] = { 0xff };
 
     deviceTester.waitForButtonPressAndRelease();
     shiftRegister.enableOutput();
