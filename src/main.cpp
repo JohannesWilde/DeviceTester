@@ -45,7 +45,7 @@ int main()
     deviceTester.enableLeds();
 
 
-    ShiftRegister shiftRegister(6,                                  // length
+    ShiftRegister shiftRegister(8,                                  // length
                                 arduinoUno.getPin(ArduinoUno::A1),  // serialInput
                                 arduinoUno.getPin(ArduinoUno::D12), // shiftRegisterClock
                                 arduinoUno.getPin(ArduinoUno::D13), // showRegisterClock
@@ -57,12 +57,23 @@ int main()
 
     deviceTester.waitForButtonPressAndRelease();
     shiftRegister.enableOutput();
+    if ( !deviceTester.checkOutputEnabled() )
+    {
+        deviceTester.disableLeds();
+    }
+
+    deviceTester.waitForButtonPressAndRelease();
 
     while (true)
     {
         shiftRegister.shiftInBits(arrayToShow);
         shiftRegister.showShiftRegister();
         deviceTester.waitForButtonPress();
+        uint8_t const unexpectedBitMask = deviceTester.checkParallelOutput(arrayToShow[0]);
+        if ( unexpectedBitMask != 0 )
+        {
+            deviceTester.disableLeds();
+        }
         --arrayToShow[0];
     }
 
