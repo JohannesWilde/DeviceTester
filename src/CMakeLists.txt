@@ -9,6 +9,7 @@ add_avr_executable(
    avrpin.cpp
    arduinouno.cpp
    devicetester.cpp
+   shiftregistertester.cpp
    shiftregister.cpp
    )
 

@@ -5,7 +5,7 @@
 
 #include <avr/io.h>
 #include "arduinouno.hpp"
-#include "devicetester.hpp"
+#include "shiftregistertester.hpp"
 #include "shiftregister.hpp"
 
 #include "avrinternalregister.hpp"
@@ -23,25 +23,25 @@ int main()
 //    AvrRegister const avrRegisterDummy(&avrInternalRegisterDummy, &avrInternalRegisterDummy, &avrInternalRegisterDummy);
 //    AvrPin const avrPinDummy(&avrRegisterDummy, static_cast<uint8_t>(~0x00));
 
-    DeviceTester deviceTester(arduinoUno.getPin(ArduinoUno::A4),    // button
-                              arduinoUno.getPin(ArduinoUno::A5),    // leds
-                              arduinoUno.getPin(ArduinoUno::D2), AvrPin::INPUT,   // pin0
-                              arduinoUno.getPin(ArduinoUno::D3), AvrPin::INPUT,
-                              arduinoUno.getPin(ArduinoUno::D4), AvrPin::INPUT,
-                              arduinoUno.getPin(ArduinoUno::D5), AvrPin::INPUT,
-                              arduinoUno.getPin(ArduinoUno::D6), AvrPin::INPUT,
-                              arduinoUno.getPin(ArduinoUno::D7), AvrPin::INPUT,
-                              arduinoUno.getPin(ArduinoUno::D8), AvrPin::INPUT,
-                              arduinoUno.getPin(ArduinoUno::D9), AvrPin::OUTPUT_LOW,
-                              arduinoUno.getPin(ArduinoUno::D10), AvrPin::INPUT,
-                              arduinoUno.getPin(ArduinoUno::D11), AvrPin::OUTPUT_LOW,
-                              arduinoUno.getPin(ArduinoUno::D12), AvrPin::OUTPUT_LOW,
-                              arduinoUno.getPin(ArduinoUno::D13), AvrPin::OUTPUT_LOW,
-                              arduinoUno.getPin(ArduinoUno::A0), AvrPin::OUTPUT_HIGH,
-                              arduinoUno.getPin(ArduinoUno::A1), AvrPin::OUTPUT_LOW,
-                              arduinoUno.getPin(ArduinoUno::A2), AvrPin::INPUT,
-                              arduinoUno.getPin(ArduinoUno::A3), AvrPin::OUTPUT_HIGH     // pin15
-                              );
+    ShiftRegisterTester deviceTester(arduinoUno.getPin(ArduinoUno::A4),    // button
+                                     arduinoUno.getPin(ArduinoUno::A5),    // leds
+                                     arduinoUno.getPin(ArduinoUno::D2),    // pin0
+                                     arduinoUno.getPin(ArduinoUno::D3),
+                                     arduinoUno.getPin(ArduinoUno::D4),
+                                     arduinoUno.getPin(ArduinoUno::D5),
+                                     arduinoUno.getPin(ArduinoUno::D6),
+                                     arduinoUno.getPin(ArduinoUno::D7),
+                                     arduinoUno.getPin(ArduinoUno::D8),
+                                     arduinoUno.getPin(ArduinoUno::D9),
+                                     arduinoUno.getPin(ArduinoUno::D10),
+                                     arduinoUno.getPin(ArduinoUno::D11),
+                                     arduinoUno.getPin(ArduinoUno::D12),
+                                     arduinoUno.getPin(ArduinoUno::D13),
+                                     arduinoUno.getPin(ArduinoUno::A0),
+                                     arduinoUno.getPin(ArduinoUno::A1),
+                                     arduinoUno.getPin(ArduinoUno::A2),
+                                     arduinoUno.getPin(ArduinoUno::A3)     // pin15
+                                     );
     deviceTester.enableLeds();
 
 
@@ -62,7 +62,7 @@ int main()
     {
         shiftRegister.shiftInBits(arrayToShow);
         shiftRegister.showShiftRegister();
-        deviceTester.waitForButtonPressAndRelease();
+        deviceTester.waitForButtonPress();
         --arrayToShow[0];
     }
 
