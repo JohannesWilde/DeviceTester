@@ -38,11 +38,11 @@ namespace // anonymous namespace
 
 
 // Convert a uintptr_t to an appropriately typed pointer of RegisterType volatile *.
-template<typename RegisterType, uintptr_t registerAddress>
-struct RegisterPointer
+template<uintptr_t registerAddress, typename RegisterType>
+RegisterType volatile * const registerPointer()
 {
-    static RegisterType volatile * const pointer = reinterpret_cast<RegisterType volatile * const>(registerAddress);
-};
+    return reinterpret_cast<RegisterType volatile * const>(registerAddress);
+}
 
 // Convert "data access"ible to I/O register address
 template<uintptr_t registerAddress>
@@ -76,13 +76,13 @@ struct AvrInternalRegister
     // Set all register bits, which are 1 in bitMask, 1 [HIGH] as well.
     static void setBitMask(uint8_t const bitMask)
     {
-        *reinterpret_cast<RegisterType volatile * const>(registerAddress) |= bitMask;
+        *registerPointer<registerAddress, RegisterType>() |= bitMask;
     }
 
     // Set all register bits, which are 1 in bitMask, 0 [LOW].
     static void clearBitMask(uint8_t const bitMask)
     {
-        *reinterpret_cast<RegisterType volatile * const>(registerAddress) &= ~bitMask;
+        *registerPointer<registerAddress, RegisterType>() &= ~bitMask;
     }
 
     // Toggle all bits, which are 1 in bitMask. I.e. for each bit in:
@@ -93,7 +93,7 @@ struct AvrInternalRegister
     // 1        | 1         | 0         - toggled
     static void toggleBitMask(uint8_t const bitMask)
     {
-        *reinterpret_cast<RegisterType volatile * const>(registerAddress) ^= bitMask;
+        *registerPointer<registerAddress, RegisterType>() ^= bitMask;
     }
 
     // Return the value currently in the register.
@@ -102,7 +102,7 @@ struct AvrInternalRegister
     // pointed to by registerAddress and the next 1, 2 or 3 bytes respectively.
     static RegisterType readRegister()
     {
-        return *reinterpret_cast<RegisterType volatile * const>(registerAddress);
+        return *registerPointer<registerAddress, RegisterType>();
     }
 };
 
