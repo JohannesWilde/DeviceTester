@@ -4,79 +4,18 @@
 #endif
 
 #include <avr/io.h>
-#include "arduinouno.hpp"
-#include "shiftregistertester.hpp"
-#include "shiftregister.hpp"
-
 #include "avrinternalregister.hpp"
-#include "avrregister.hpp"
-#include "avrpin.hpp"
-
 
 int main()
 {
-    ArduinoUno arduinoUno;
+    AvrInternalRegister<SfrMemoryFromIoAddress<PORTB_REGISTER>::address, uint8_t>::setBitMask(uint8_t(0x04));
+    AvrInternalRegister<SfrMemoryFromIoAddress<PORTB_REGISTER>::address, uint8_t>::toggleBitMask(uint8_t(0x04));
+    uint8_t blub = AvrInternalRegister<SfrMemoryFromIoAddress<PORTB_REGISTER>::address, uint8_t>::readRegister();
+    ++blub;
+//    uintptr_t const bla = reinterpret_cast<uintptr_t>(&PORTB);
+//    *reinterpret_cast<uint8_t volatile * const>(bla) &= 0x10;
+//    _MMIO_BYTE(PORTB) |= 0x04;
+//    PORTB |= 0x04;
 
-//    // dummy register for unused parameters
-//    uint8_t dummyRegister;
-//    AvrInternalRegister const avrInternalRegisterDummy(&dummyRegister);
-//    AvrRegister const avrRegisterDummy(&avrInternalRegisterDummy, &avrInternalRegisterDummy, &avrInternalRegisterDummy);
-//    AvrPin const avrPinDummy(&avrRegisterDummy, static_cast<uint8_t>(~0x00));
-
-    ShiftRegisterTester deviceTester(arduinoUno.getPin(ArduinoUno::A4),    // button
-                                     arduinoUno.getPin(ArduinoUno::A5),    // leds
-                                     arduinoUno.getPin(ArduinoUno::D2),    // pin0
-                                     arduinoUno.getPin(ArduinoUno::D3),
-                                     arduinoUno.getPin(ArduinoUno::D4),
-                                     arduinoUno.getPin(ArduinoUno::D5),
-                                     arduinoUno.getPin(ArduinoUno::D6),
-                                     arduinoUno.getPin(ArduinoUno::D7),
-                                     arduinoUno.getPin(ArduinoUno::D8),
-                                     arduinoUno.getPin(ArduinoUno::D9),
-                                     arduinoUno.getPin(ArduinoUno::D10),
-                                     arduinoUno.getPin(ArduinoUno::D11),
-                                     arduinoUno.getPin(ArduinoUno::D12),
-                                     arduinoUno.getPin(ArduinoUno::D13),
-                                     arduinoUno.getPin(ArduinoUno::A0),
-                                     arduinoUno.getPin(ArduinoUno::A1),
-                                     arduinoUno.getPin(ArduinoUno::A2),
-                                     arduinoUno.getPin(ArduinoUno::A3)     // pin15
-                                     );
-    deviceTester.enableLeds();
-
-
-    ShiftRegister shiftRegister(8,                                  // length
-                                arduinoUno.getPin(ArduinoUno::A1),  // serialInput
-                                arduinoUno.getPin(ArduinoUno::D12), // shiftRegisterClock
-                                arduinoUno.getPin(ArduinoUno::D13), // showRegisterClock
-                                arduinoUno.getPin(ArduinoUno::A0),  // invertedOutputEnable
-                                arduinoUno.getPin(ArduinoUno::D11)  // invertedShiftRegisterClear
-                                );
-
-    uint8_t arrayToShow[1] = { 0xff };
-
-    deviceTester.waitForButtonPressAndRelease();
-    shiftRegister.enableOutput();
-    if ( !deviceTester.checkOutputEnabled() )
-    {
-        deviceTester.disableLeds();
-    }
-
-    deviceTester.waitForButtonPressAndRelease();
-
-    while (true)
-    {
-        shiftRegister.shiftInBits(arrayToShow);
-        shiftRegister.showShiftRegister();
-        deviceTester.waitForButtonPress();
-        uint8_t const unexpectedBitMask = deviceTester.checkParallelOutput(arrayToShow[0]);
-        if ( unexpectedBitMask != 0 )
-        {
-            deviceTester.disableLeds();
-        }
-        --arrayToShow[0];
-    }
-
-    shiftRegister.disableOutput();
     return 0;
 }

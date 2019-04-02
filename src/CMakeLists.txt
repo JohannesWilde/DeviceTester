@@ -4,12 +4,6 @@
 add_avr_executable(
    main
    main.cpp
-   avrregister.cpp
-   avrpin.cpp
-   arduinouno.cpp
-   devicetester.cpp
-   shiftregistertester.cpp
-   shiftregister.cpp
    )
 
 #####################################################################

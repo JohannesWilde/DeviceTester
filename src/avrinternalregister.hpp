@@ -1,90 +1,109 @@
 #ifndef AVRINTERNALREGISTER_HPP
 #define AVRINTERNALREGISTER_HPP
 
-// load asm-compatible special function register macros.
-// backup whether _SFR_ASM_COMPAT was defined true or false [false is default]
-#ifdef _SFR_ASM_COMPAT
-    #if _SFR_ASM_COMPAT
-        #define _SFR_ASM_COMPAT_BACKUP 1 // true
-    #else
-        #define _SFR_ASM_COMPAT_BACKUP 0 // false
-    #endif
-    #undef _SFR_ASM_COMPAT
+// this is only for the QtCreator to find the correct highlighting - this is already defined somewhere before
+#ifndef __AVR_ATmega328P__
+#define __AVR_ATmega328P__
 #endif
-// backup whether sfr_devs.h was included prior
-#ifdef _AVR_SFR_DEFS_H_
-    #define _AVR_SFR_DEFS_H__BACKUP
-    #undef _AVR_SFR_DEFS_H_
-#endif
-// load asm-compatible state, but with C specific parts
-// however PORTx returns the internal register address and not an assignable l-value to that register!
-#define _SFR_ASM_COMPAT 1
+
+#include <avr/io.h>
 #include <avr/sfr_defs.h>
-
-
 #include <stdint.h>
 
 namespace // anonymous namespace
 {
 
-//    template<uintptr_t const registerAddress>
-//    void setBitMask_(uint8_t const bitMask)
-//    {
-//        _MMIO_BYTE(registerAddress) |= bitMask;
-//    }
-
-//    template<uint8_t volatile * const registerAddress>
-//    void clearBitMask(uint8_t const bitMask)
-//    {
-//        *registerAddress &= ~bitMask;
-//    }
-
-//    template<uint8_t volatile * const registerAddress>
-//    void toggleBitMask(uint8_t const bitMask)
-//    {
-//        *registerAddress ^= bitMask;
-//    }
-
-//    template<uint8_t volatile * const registerAddress>
-//    uint8_t readRegister()
-//    {
-//        return *registerAddress;
-//    }
-
 }
 
-namespace AvrInternalRegister
-{
-    enum RegisterAddress
-    {
-        Portb = PORTB
-    };
+// The  lie in the data memory right after the
+// general purpose registers
+// The first 64 [6-bit, 0x40] special function registers [SFRs] can be accessed using specialized
+// assembler instructions [e.g. in, out, ... and the first 32 with even more specialized like sbi,
+// cbi, ...] - this is called "direct I/O access".
+// All further registers [if they exist] however have to be accessed using "data access"
+// commands [e.g. ld, st instructions]. As to retain a consistent register access,
+// the specially accessible first 64 registers are accessible via ld and st as well.
+// Additionally the general purpose registers [which are 32 = 0x20] are mapped to the data
+// memory before the SFRs, which thus introduces an offset to the SFR addresses, when using
+// ld, st or similar, only!
+//
+// This leads to the following duplicate names:
+// I/O register     | direct acces     | data access
+// ---------------------------------------------------------
+// 0x00 - 0x3f      | 0x00 - 0x3f      | 0x20 - 0x5f
+// 0x40 - END       |     ---          | 0x60 - (END + 0x20)
+//
+// The avr-gcc and avr-g++ expect data access register names and will
+// use direct I/O access where possible.
 
-    template<RegisterAddress const registerAddress>
-    void setBitMask(uint8_t const bitMask)
+
+// Convert a uintptr_t to an appropriately typed pointer of RegisterType volatile *.
+template<typename RegisterType, uintptr_t registerAddress>
+struct RegisterPointer
+{
+    static RegisterType volatile * const pointer = reinterpret_cast<RegisterType volatile * const>(registerAddress);
+};
+
+// Convert "data access"ible to I/O register address
+template<uintptr_t registerAddress>
+struct SfrIoFromMemoryAddress
+{
+    static uintptr_t const address = registerAddress - __SFR_OFFSET;
+};
+
+// Convert I/O register address to "data access"ible address
+// This is quite useful when converting the register addresses as stated in the Atmel
+// reference documents or their respective device headers to avr-gcc or avr-g++
+// usable "data access" register addresses.
+template<uintptr_t registerAddress>
+struct SfrMemoryFromIoAddress
+{
+    static uintptr_t const address = registerAddress + __SFR_OFFSET;
+};
+
+// checks whether a "data access" register address is in fact an I/O register address
+template<uintptr_t registerAddress>
+struct IsSfrIoRegister
+{
+    static bool const value = ((__SFR_OFFSET <= registerAddress) && (registerAddress < (0x40 + __SFR_OFFSET)));
+};
+
+
+
+template<uintptr_t registerAddress, typename RegisterType>
+struct AvrInternalRegister
+{
+    // Set all register bits, which are 1 in bitMask, 1 [HIGH] as well.
+    static void setBitMask(uint8_t const bitMask)
     {
-        _MMIO_BYTE(registerAddress) |= bitMask;
+        *reinterpret_cast<RegisterType volatile * const>(registerAddress) |= bitMask;
     }
 
+    // Set all register bits, which are 1 in bitMask, 0 [LOW].
+    static void clearBitMask(uint8_t const bitMask)
+    {
+        *reinterpret_cast<RegisterType volatile * const>(registerAddress) &= ~bitMask;
+    }
 
-}
+    // Toggle all bits, which are 1 in bitMask. I.e. for each bit in:
+    // bitMask  | prior     | after
+    // 0        | 0         | 0         - unchanged
+    // 0        | 1         | 1         - unchanged
+    // 1        | 0         | 1         - toggled
+    // 1        | 1         | 0         - toggled
+    static void toggleBitMask(uint8_t const bitMask)
+    {
+        *reinterpret_cast<RegisterType volatile * const>(registerAddress) ^= bitMask;
+    }
 
-// restore previous state of setup for next include.
-// check whether _SFR_ASM_COMPAT was defined already
-#undef _SFR_ASM_COMPAT
-#ifdef _SFR_ASM_COMPAT_BACKUP
-    #if _SFR_ASM_COMPAT_BACKUP
-        #define _SFR_ASM_COMPAT 1 // true
-    #else
-        #define _SFR_ASM_COMPAT 0 // false
-    #endif
-#endif
-// check whether sfr_devs.h was included prior
-// make sure, sfr_defs.h is included with the next include-statement anew
-#undef _AVR_SFR_DEFS_H_
-#ifdef _AVR_SFR_DEFS_H__BACKUP
-    // in case it was previously loaded already, reload it here with the previous parameters
-    #include <avr/sfr_defs.h>
-#endif
+    // Return the value currently in the register.
+    // Please note, that for devices with only 8-bit accessible registers
+    // this will for RegisterTypes with e.g. 2, 3 or 4 bytes read out the register
+    // pointed to by registerAddress and the next 1, 2 or 3 bytes respectively.
+    static RegisterType readRegister()
+    {
+        return *reinterpret_cast<RegisterType volatile * const>(registerAddress);
+    }
+};
 
 #endif // AVRINTERNALREGISTER_H
