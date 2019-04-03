@@ -3,27 +3,50 @@
 
 #include <stdint.h>
 #include <avrinputoutput.hpp>
+#include "avrinternalregister.hpp"
 
-// forward declaration
-class AvrInternalRegister;
 
-class AvrRegister : public AvrInputOutput
+template<typename PortRegister, typename DdrRegister, typename PinRegister>
+struct AvrRegister
 {
-public:
-    AvrRegister(AvrInternalRegister const * const portRegister,
-                AvrInternalRegister const * const ddrRegister,
-                AvrInternalRegister const * const pinRegister);
-
     // setType(PinType const pinType, uint8_t const bitMask) only set those bits, that are 0b1 in bitMask
-    void setType(PinType const pinType, uint8_t const bitMask = 0xff) const;
-    uint8_t readPort() const;
-    uint8_t readDdr() const;
-    uint8_t readPin() const;
+    static void setType(AvrInputOutput::PinType const pinType, typename DdrRegister::Type const bitMask = 0xff)
+    {
+        switch (pinType)
+        {
+        case AvrInputOutput::OUTPUT_HIGH:
+            DdrRegister::setBitMask(bitMask);       // output
+            PortRegister::setBitMask(bitMask);      // high
+            break;
+        case AvrInputOutput::OUTPUT_LOW:
+            DdrRegister::setBitMask(bitMask);       // output
+            PortRegister::clearBitMask(bitMask);    // low
+            break;
+        case AvrInputOutput::INPUT:
+            DdrRegister::clearBitMask(bitMask);     // input
+            PortRegister::clearBitMask(bitMask);    // no pull-up
+            break;
+        case AvrInputOutput::INPUT_PULLUP:
+            DdrRegister::clearBitMask(bitMask);     // input
+            PortRegister::setBitMask(bitMask);      // pull-up [PUD in MCUCR needs to be low]
+            // break;
+        }
+    }
 
-private:
-    AvrInternalRegister const * const portRegister;
-    AvrInternalRegister const * const ddrRegister;
-    AvrInternalRegister const * const pinRegister;
+    static typename PortRegister::Type readPort()
+    {
+        return PortRegister::readRegister();
+    }
+
+    static typename DdrRegister::Type readDdr()
+    {
+        return DdrRegister::readRegister();
+    }
+
+    static typename PinRegister::Type readPin()
+    {
+        return PinRegister::readRegister();
+    }
 };
 
 #endif // AVRREGISTER_H
