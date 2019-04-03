@@ -73,7 +73,10 @@ struct IsSfrIoRegister
 template<uintptr_t registerAddress, typename RegisterType>
 struct AvrInternalRegister
 {
-    // Set all register bits, which are 1 in bitMask, 1 [HIGH] as well.
+    // make RegisterType accessible via "typename AvrInternalRegister<address, type>::Type"
+    typedef RegisterType Type;
+
+    // Set all register bits, which are 1 in bitMask, 1 [HIGH].
     static void setBitMask(uint8_t const bitMask)
     {
         *registerPointer<registerAddress, RegisterType>() |= bitMask;
