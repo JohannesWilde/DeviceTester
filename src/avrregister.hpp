@@ -38,6 +38,11 @@ struct AvrRegister
         }
     }
 
+    static void togglePort(Type const bitMask = ~0)
+    {
+        PortRegister::toggleBitMask(bitMask);
+    }
+
     static typename PortRegister::Type readPort()
     {
         return PortRegister::readRegister();
