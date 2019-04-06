@@ -9,8 +9,13 @@
 template<typename PortRegister, typename DdrRegister, typename PinRegister>
 struct AvrRegister
 {
+    typedef DdrRegister::Type Type;
+    typedef PortRegister Port;
+    typedef DdrRegister Ddr;
+    typedef PinRegister Pin;
+
     // setType(PinType const pinType, uint8_t const bitMask) only set those bits, that are 0b1 in bitMask
-    static void setType(AvrInputOutput::PinType const pinType, typename DdrRegister::Type const bitMask = 0xff)
+    static void setType(AvrInputOutput::PinType const pinType, Type const bitMask = 0xff)
     {
         switch (pinType)
         {
