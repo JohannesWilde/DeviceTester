@@ -15,7 +15,7 @@ struct AvrRegister
     typedef PinRegister Pin;
 
     // setType(PinType const pinType, uint8_t const bitMask) only set those bits, that are 0b1 in bitMask
-    static void setType(AvrInputOutput::PinType const pinType, Type const bitMask = 0xff)
+    static void setType(AvrInputOutput::PinType const pinType, Type const bitMask = ~0)
     {
         switch (pinType)
         {
