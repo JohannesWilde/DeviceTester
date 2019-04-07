@@ -20,69 +20,58 @@
 #ifndef ARDUINOUNO_HPP
 #define ARDUINOUNO_HPP
 
-// forward declarations
-class AvrInternalRegister;
-class AvrRegister;
-class AvrPin;
+#ifndef __AVR_ATmega328P__
+#warning "An Arduino Uno typically has an Atmega328p - currently something else is #defined."
+#endif
 
-class ArduinoUno
+#include "avrinternalregister.hpp"
+#include "avrioregister.hpp"
+#include "avrpin.hpp"
+
+struct ArduinoUno
 {
 public:
-    enum Registers {
-        REGISTER_B = 0,
-        REGISTER_C = 1,
-        REGISTER_D = 2
-    };
+    // you can access these registers - but only do so if using the higher level AvrIoRegister or even AvrPin
+    // is really not sufficient.
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PORTB_REGISTER>::address, uint8_t> PortBInternal;
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PINB_REGISTER>::address, uint8_t> PinBInternal;
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<DDRB_REGISTER>::address, uint8_t> DdrBInternal;
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PORTC_REGISTER>::address, uint8_t> PortCInternal;
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PINC_REGISTER>::address, uint8_t> PinCInternal;
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<DDRC_REGISTER>::address, uint8_t> DdrCInternal;
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PORTD_REGISTER>::address, uint8_t> PortDInternal;
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PIND_REGISTER>::address, uint8_t> PinDInternal;
+    typedef AvrInternalRegister<SfrMemoryFromIoAddress<DDRD_REGISTER>::address, uint8_t> DdrDInternal;
 
-    enum Pins {
-        D0 = 0,
-        D1 = 1,
-        D2 = 2,
-        D3 = 3,
-        D4 = 4,
-        D5 = 5,
-        D6 = 6,
-        D7 = 7,
-        D8 = 8,
-        D9 = 9,
-        D10 = 10,
-        D11 = 11,
-        D12 = 12,
-        D13 = 13,
-        A0 = 14,
-        A1 = 15,
-        A2 = 16,
-        A3 = 17,
-        A4 = 18,
-        A5 = 19,
-        LED_BUILTIN = D13
-    };
+    // The three accessible registers - please note, that B and C are only pins 0 - 5 accessible from the outside.
+    typedef AvrIoRegister<PortBInternal, DdrBInternal, PinBInternal> RegisterB;
+    typedef AvrIoRegister<PortCInternal, DdrCInternal, PinCInternal> RegisterC;
+    typedef AvrIoRegister<PortDInternal, DdrDInternal, PinDInternal> RegisterD;
 
-    ArduinoUno();
+    // The individual Arduino Pins.
+    typedef AvrPin<RegisterD, PORTD0> D0;
+    typedef AvrPin<RegisterD, PORTD1> D1;
+    typedef AvrPin<RegisterD, PORTD2> D2;
+    typedef AvrPin<RegisterD, PORTD3> D3;
+    typedef AvrPin<RegisterD, PORTD4> D4;
+    typedef AvrPin<RegisterD, PORTD5> D5;
+    typedef AvrPin<RegisterD, PORTD6> D6;
+    typedef AvrPin<RegisterD, PORTD7> D7;
+    typedef AvrPin<RegisterB, PORTB0> D8;
+    typedef AvrPin<RegisterB, PORTB1> D9;
+    typedef AvrPin<RegisterB, PORTB2> D10;
+    typedef AvrPin<RegisterB, PORTB3> D11;
+    typedef AvrPin<RegisterB, PORTB4> D12;
+    typedef AvrPin<RegisterB, PORTB5> D13;
+    typedef AvrPin<RegisterC, PORTC0> A0;
+    typedef AvrPin<RegisterC, PORTC1> A1;
+    typedef AvrPin<RegisterC, PORTC2> A2;
+    typedef AvrPin<RegisterC, PORTC3> A3;
+    typedef AvrPin<RegisterC, PORTC4> A4;
+    typedef AvrPin<RegisterC, PORTC5> A5;
 
-    AvrRegister const * getRegister(Registers registerNumber) const;
-    AvrPin const * getPin(Pins pinNumber) const;
-
-private:
-    // the registers and pins objects only have to be created once - afterwards only references should be passed.
-    // these registers combine the port, dd and pin registers for the same pins
-    static const AvrRegister avrRegisters[3];
-    // these pins correspond to one pin of the Arduino Uno
-    static const AvrPin avrPins[20];
-
-    // these are the seperate registers, available in hardware
-    enum InternalRegisters {
-        REGISTER_PORTB,
-        REGISTER_DDRB,
-        REGISTER_PINB,
-        REGISTER_PORTC,
-        REGISTER_DDRC,
-        REGISTER_PINC,
-        REGISTER_PORTD,
-        REGISTER_DDRD,
-        REGISTER_PIND
-    };
-    static const AvrInternalRegister avrInternalRegisters[9];
+    // convenience names
+    typedef D13 LED_BUILTIN;
 };
 
 #endif // ARDUINOUNO_H
