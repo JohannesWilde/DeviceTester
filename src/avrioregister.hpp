@@ -1,5 +1,5 @@
-#ifndef AVRREGISTER_HPP
-#define AVRREGISTER_HPP
+#ifndef AVRIOREGISTER_HPP
+#define AVRIOREGISTER_HPP
 
 #include <stdint.h>
 #include <avrinputoutput.hpp>
@@ -36,7 +36,7 @@ struct is_same
 // The actual register
 
 template<typename PortRegister, typename DdrRegister, typename PinRegister>
-struct AvrRegister
+struct AvrIoRegister
 {
 private:
     // all three registers should have the same Type, thus choose one.
@@ -97,4 +97,4 @@ public:
     }
 };
 
-#endif // AVRREGISTER_H
+#endif // AVRIOREGISTER_H

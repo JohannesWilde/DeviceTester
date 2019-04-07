@@ -5,7 +5,7 @@
 
 #include <avr/io.h>
 #include "avrinternalregister.hpp"
-#include "avrregister.hpp"
+#include "avrioregister.hpp"
 #include "avrpin.hpp"
 
 int main()
@@ -18,7 +18,7 @@ int main()
     uint8_t blub = PortBInternal::readRegister();
     ++blub;
 
-    typedef AvrRegister<PortBInternal, DdrBInternal, PinBInternal> PortBIoRegister;
+    typedef AvrIoRegister<PortBInternal, DdrBInternal, PinBInternal> PortBIoRegister;
     uint8_t bla = PortBIoRegister::readPin();
     --bla;
     PortBIoRegister::togglePort(0x20);
