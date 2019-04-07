@@ -6,6 +6,7 @@
 #include <avr/io.h>
 #include "avrinternalregister.hpp"
 #include "avrregister.hpp"
+#include "avrpin.hpp"
 
 int main()
 {
@@ -21,6 +22,10 @@ int main()
     uint8_t bla = PortBIoRegister::readPin();
     --bla;
     PortBIoRegister::togglePort(0x20);
+
+    typedef AvrPin<PortBIoRegister, PORTB3> PortBIo3;
+    PortBIo3::setType(AvrInputOutput::INPUT_PULLUP);
+    PortBIo3::togglePort();
 
 //    uintptr_t const bla = reinterpret_cast<uintptr_t>(&PORTB);
 //    *reinterpret_cast<uint8_t volatile * const>(bla) &= 0x10;

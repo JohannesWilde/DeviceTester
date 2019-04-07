@@ -4,26 +4,46 @@
 #include <stdint.h>
 #include "avrinputoutput.hpp"
 
-class AvrRegister;
-
-class AvrPin : public AvrInputOutput
+// Struct for handling a single pin in a register conveniently.
+template<typename AvrRegister, unsigned pinNumber_>
+struct AvrPin
 {
-public:
-    AvrPin(AvrRegister const * const avrRegister,
-           uint8_t const bitNumber);
+    typedef AvrRegister Register;
+    enum { pinNumber = pinNumber_,
+           bitMask = _BV(pinNumber) };
 
-    void setType(PinType const pinType) const;
-    PinState readPort() const;
-    PinState readDdr() const;
-    PinState readPin() const;
+    static void setType(AvrInputOutput::PinType const pinType)
+    {
+        AvrRegister::setType(pinType, bitMask);
+    }
+
+    static void togglePort()
+    {
+        AvrRegister::togglePort(bitMask);
+    }
+
+    static typename AvrInputOutput::PinState readPort()
+    {
+        return checkPinState_(AvrRegister::readPort());
+    }
+
+    static typename AvrInputOutput::PinState readPin()
+    {
+        return checkPinState_(AvrRegister::readPin());
+    }
+
+    static typename AvrInputOutput::PinState readDdr()
+    {
+        return checkPinState_(AvrRegister::readDdr());
+    }
 
 protected:
-    inline PinState checkPinInRegister_(uint8_t const registerValue) const;
-
-private:
-    AvrRegister const * const avrRegister;
-    uint8_t const bitMask;
-
+    // this checks, whether the pin is set in the registerValue or not -
+    // if it is, this method returns HIGH, otherwise LOW.
+    static typename AvrInputOutput::PinState checkPinState_(typename AvrRegister::Type const registerValue)
+    {
+        return ((registerValue & bitMask) != 0) ? AvrInputOutput::HIGH : AvrInputOutput::LOW;
+    }
 };
 
 #endif // AVRPIN_H
