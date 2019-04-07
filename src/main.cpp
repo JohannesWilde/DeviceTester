@@ -14,8 +14,8 @@ int main()
     typedef AvrInternalRegister<SfrMemoryFromIoAddress<PINB_REGISTER>::address, uint8_t> PinBInternal;
     typedef AvrInternalRegister<SfrMemoryFromIoAddress<DDRB_REGISTER>::address, uint8_t> DdrBInternal;
     PortBInternal::setBitMask(uint8_t(0x04));
-    AvrInternalRegister<SfrMemoryFromIoAddress<PORTB_REGISTER>::address, uint8_t>::toggleBitMask(uint8_t(0x04));
-    uint8_t blub = AvrInternalRegister<SfrMemoryFromIoAddress<PORTB_REGISTER>::address, uint8_t>::readRegister();
+    PortBInternal::toggleBitMask(uint8_t(0x04));
+    uint8_t blub = PortBInternal::readRegister();
     ++blub;
 
     typedef AvrRegister<PortBInternal, DdrBInternal, PinBInternal> PortBIoRegister;
@@ -26,11 +26,6 @@ int main()
     typedef AvrPin<PortBIoRegister, PORTB3> PortBIo3;
     PortBIo3::setType(AvrInputOutput::INPUT_PULLUP);
     PortBIo3::togglePort();
-
-//    uintptr_t const bla = reinterpret_cast<uintptr_t>(&PORTB);
-//    *reinterpret_cast<uint8_t volatile * const>(bla) &= 0x10;
-//    _MMIO_BYTE(PORTB) |= 0x04;
-//    PORTB |= 0x04;
 
     return 0;
 }
