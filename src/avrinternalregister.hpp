@@ -10,11 +10,6 @@
 #include <avr/sfr_defs.h>
 #include <stdint.h>
 
-namespace // anonymous namespace
-{
-
-}
-
 // The  lie in the data memory right after the
 // general purpose registers
 // The first 64 [6-bit, 0x40] special function registers [SFRs] can be accessed using specialized
