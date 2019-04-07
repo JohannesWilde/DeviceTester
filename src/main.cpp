@@ -20,6 +20,7 @@ int main()
     typedef AvrRegister<PortBInternal, DdrBInternal, PinBInternal> PortBIoRegister;
     uint8_t bla = PortBIoRegister::readPin();
     --bla;
+    PortBIoRegister::togglePort(0x20);
 
 //    uintptr_t const bla = reinterpret_cast<uintptr_t>(&PORTB);
 //    *reinterpret_cast<uint8_t volatile * const>(bla) &= 0x10;
