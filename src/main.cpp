@@ -5,9 +5,6 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "avrinternalregister.hpp"
-#include "avrioregister.hpp"
-#include "avrpin.hpp"
 #include "arduinouno.hpp"
 
 int main()
