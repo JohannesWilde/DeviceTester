@@ -1,7 +1,7 @@
 // ATMEL ATMEGA328p
 //
 //                  +-\/-+
-//            PC6  1|    |28  PC5 (AI 5)
+// Reset      PC6  1|    |28  PC5 (AI 5)
 //      (D 0) PD0  2|    |27  PC4 (AI 4)
 //      (D 1) PD1  3|    |26  PC3 (AI 3)
 //      (D 2) PD2  4|    |25  PC2 (AI 2)
@@ -24,54 +24,24 @@
 #warning "An Arduino Uno typically has an Atmega328p - currently something else is #defined."
 #endif
 
-#include "avrinternalregister.hpp"
-#include "avrioregister.hpp"
-#include "avrpin.hpp"
+#include "atmega328p.hpp"
 
-struct ArduinoUno
+struct ArduinoUno : Atmega328p
 {
 public:
-    // you can access these registers - but only do so if using the higher level AvrIoRegister or even AvrPin
-    // is really not sufficient.
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PORTB_REGISTER>::address, uint8_t> PortBInternal;
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PINB_REGISTER>::address, uint8_t> PinBInternal;
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<DDRB_REGISTER>::address, uint8_t> DdrBInternal;
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PORTC_REGISTER>::address, uint8_t> PortCInternal;
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PINC_REGISTER>::address, uint8_t> PinCInternal;
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<DDRC_REGISTER>::address, uint8_t> DdrCInternal;
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PORTD_REGISTER>::address, uint8_t> PortDInternal;
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<PIND_REGISTER>::address, uint8_t> PinDInternal;
-    typedef AvrInternalRegister<SfrMemoryFromIoAddress<DDRD_REGISTER>::address, uint8_t> DdrDInternal;
-
-    // The three accessible registers - please note, that B and C are only pins 0 - 5 accessible from the outside.
-    typedef AvrIoRegister<PortBInternal, DdrBInternal, PinBInternal> RegisterB;
-    typedef AvrIoRegister<PortCInternal, DdrCInternal, PinCInternal> RegisterC;
-    typedef AvrIoRegister<PortDInternal, DdrDInternal, PinDInternal> RegisterD;
-
     // The individual Arduino Pins.
-    typedef AvrPin<RegisterD, PORTD0> D0;
-    typedef AvrPin<RegisterD, PORTD1> D1;
-    typedef AvrPin<RegisterD, PORTD2> D2;
-    typedef AvrPin<RegisterD, PORTD3> D3;
-    typedef AvrPin<RegisterD, PORTD4> D4;
-    typedef AvrPin<RegisterD, PORTD5> D5;
-    typedef AvrPin<RegisterD, PORTD6> D6;
-    typedef AvrPin<RegisterD, PORTD7> D7;
-    typedef AvrPin<RegisterB, PORTB0> D8;
-    typedef AvrPin<RegisterB, PORTB1> D9;
-    typedef AvrPin<RegisterB, PORTB2> D10;
-    typedef AvrPin<RegisterB, PORTB3> D11;
-    typedef AvrPin<RegisterB, PORTB4> D12;
-    typedef AvrPin<RegisterB, PORTB5> D13;
-    typedef AvrPin<RegisterC, PORTC0> A0;
-    typedef AvrPin<RegisterC, PORTC1> A1;
-    typedef AvrPin<RegisterC, PORTC2> A2;
-    typedef AvrPin<RegisterC, PORTC3> A3;
-    typedef AvrPin<RegisterC, PORTC4> A4;
-    typedef AvrPin<RegisterC, PORTC5> A5;
-
-    // convenience names
-    typedef D13 LED_BUILTIN;
+    typedef typename Atmega328p::B0 D8;
+    typedef typename Atmega328p::B1 D9;
+    typedef typename Atmega328p::B2 D10;
+    typedef typename Atmega328p::B3 D11;
+    typedef typename Atmega328p::B4 D12;
+    typedef typename Atmega328p::B5 D13;
+    typedef typename Atmega328p::C0 A0;
+    typedef typename Atmega328p::C1 A1;
+    typedef typename Atmega328p::C2 A2;
+    typedef typename Atmega328p::C3 A3;
+    typedef typename Atmega328p::C4 A4;
+    typedef typename Atmega328p::C5 A5;
 };
 
 #endif // ARDUINOUNO_H
