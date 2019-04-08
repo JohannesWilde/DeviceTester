@@ -81,6 +81,16 @@ public:
         PinRegister::setBitMask(bitMask);
     }
 
+    static void setPort(Type const bitMask)
+    {
+        PortRegister::setBitMask(bitMask);
+    }
+
+    static void clearPort(Type const bitMask)
+    {
+        PortRegister::clearBitMask(bitMask);
+    }
+
     static typename PortRegister::Type readPort()
     {
         return PortRegister::readRegister();

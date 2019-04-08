@@ -22,6 +22,16 @@ struct AvrPin
         AvrIoRegister::togglePort(bitMask);
     }
 
+    static void setPort()
+    {
+        AvrIoRegister::setPort(bitMask);
+    }
+
+    static void clearPort()
+    {
+        AvrIoRegister::clearPort(bitMask);
+    }
+
     static typename AvrInputOutput::PinState readPort()
     {
         return checkPinState_(AvrIoRegister::readPort());
