@@ -43,7 +43,7 @@ public:
     typedef AvrInternalRegister<SfrMemoryFromIoAddress<PIND_REGISTER>::address, uint8_t> PinDInternal;
     typedef AvrInternalRegister<SfrMemoryFromIoAddress<DDRD_REGISTER>::address, uint8_t> DdrDInternal;
 
-    // The three accessible registers - please note, that B and C are only pins 0 - 5 accessible from the outside.
+    // The three accessible registers - please note, that for B and C are only pins 0 - 5 are accessible from the outside.
     typedef AvrIoRegister<PortBInternal, DdrBInternal, PinBInternal> RegisterB;
     typedef AvrIoRegister<PortCInternal, DdrCInternal, PinCInternal> RegisterC;
     typedef AvrIoRegister<PortDInternal, DdrDInternal, PinDInternal> RegisterD;
