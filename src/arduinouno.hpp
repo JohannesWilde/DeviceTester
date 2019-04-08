@@ -30,6 +30,14 @@ struct ArduinoUno : Atmega328p
 {
 public:
     // The individual Arduino Pins.
+    typedef typename Atmega328p::D0 D0;
+    typedef typename Atmega328p::D1 D1;
+    typedef typename Atmega328p::D2 D2;
+    typedef typename Atmega328p::D3 D3;
+    typedef typename Atmega328p::D4 D4;
+    typedef typename Atmega328p::D5 D5;
+    typedef typename Atmega328p::D6 D6;
+    typedef typename Atmega328p::D7 D7;
     typedef typename Atmega328p::B0 D8;
     typedef typename Atmega328p::B1 D9;
     typedef typename Atmega328p::B2 D10;
