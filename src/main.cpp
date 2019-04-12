@@ -32,49 +32,9 @@ int main()
                                 arduinoUno::A2,
                                 arduinoUno::A3> shiftRegisterTester;
 
-    shiftRegisterTester::initialize();
-
     typedef ShiftRegister<8, arduinoUno::A1, arduinoUno::D12, arduinoUno::D13, arduinoUno::A0, arduinoUno::D11> shiftRegister;
-    shiftRegister::initialize();
-    uint8_t data[1] = {0xff};
-    shiftRegister::enableOutput();
 
-    data[0] = 0xff;
-    shiftRegister::shiftInBits(data);
-    shiftRegister::showShiftRegister();
-    _delay_ms(1000);
-
-    shiftRegisterTester::enableLeds();
-    _delay_ms(1000);
-
-    if ( shiftRegisterTester::checkOutputEnabled() )
-    {
-        data[0] = 0x55;
-        shiftRegister::shiftInBits(data);
-        shiftRegister::showShiftRegister();
-    }
-
-
-    while (true)
-    {
-        _delay_ms(500);
-        shiftRegister::shiftInBits(data);
-        shiftRegister::showShiftRegister();
-
-        if (!shiftRegisterTester::checkParallelOutput(data[0]))
-        {
-            data[0] = shiftRegisterTester::compareParallelOutputTo(data[0]);
-            while (true)
-            {
-                shiftRegister::shiftInBits(data);
-                shiftRegister::showShiftRegister();
-                _delay_ms(500);
-                data[0] = ~data[0];
-            }
-        }
-
-        data[0]--;
-    }
+    shiftRegisterTester::test<shiftRegister>();
 
     return 0;
 }

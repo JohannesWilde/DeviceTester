@@ -172,6 +172,55 @@ public:
         return currentBitMask;
     }
 
+    template<typename ShiftRegisterDriver>
+    static bool test()
+    {
+        ShiftRegisterTester::initialize();
+
+        ShiftRegisterDriver::initialize();
+        uint8_t data[1] = {0xff};
+        ShiftRegisterDriver::enableOutput();
+
+        data[0] = 0xff;
+        ShiftRegisterDriver::shiftInBits(data);
+        ShiftRegisterDriver::showShiftRegister();
+        _delay_ms(1000);
+
+        ShiftRegisterTester::enableLeds();
+        _delay_ms(1000);
+
+        if ( ShiftRegisterTester::checkOutputEnabled() )
+        {
+            data[0] = 0x55;
+            ShiftRegisterDriver::shiftInBits(data);
+            ShiftRegisterDriver::showShiftRegister();
+        }
+
+
+        while (true)
+        {
+            _delay_ms(500);
+            ShiftRegisterDriver::shiftInBits(data);
+            ShiftRegisterDriver::showShiftRegister();
+
+            if (!ShiftRegisterTester::checkParallelOutput(data[0]))
+            {
+                data[0] = ShiftRegisterTester::compareParallelOutputTo(data[0]);
+                while (true)
+                {
+                    ShiftRegisterDriver::shiftInBits(data);
+                    ShiftRegisterDriver::showShiftRegister();
+                    _delay_ms(500);
+                    data[0] = ~data[0];
+                }
+            }
+
+            data[0]--;
+        }
+
+        return false;
+    }
+
 };
 
 #endif // SHIFTREGISTERTESTER_HPP

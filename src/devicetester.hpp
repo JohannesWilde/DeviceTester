@@ -153,6 +153,14 @@ public:
     {
         return ( DevicePin::readDdr() == pinState );
     }
+
+    template<typename DeviceDriver>
+    static bool test()
+    {
+        // every device tester should implement a test() method
+        // the return value will show whether the test was successfull or not
+        return false;
+    }
 };
 
 #endif // DEVICETESTER_H
