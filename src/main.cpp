@@ -63,7 +63,14 @@ int main()
 
         if (!shiftRegisterTester::checkParallelOutput(data[0]))
         {
-            break;
+            data[0] = shiftRegisterTester::compareParallelOutputTo(data[0]);
+            while (true)
+            {
+                shiftRegister::shiftInBits(data);
+                shiftRegister::showShiftRegister();
+                _delay_ms(500);
+                data[0] = ~data[0];
+            }
         }
 
         data[0]--;
