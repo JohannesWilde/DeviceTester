@@ -6,41 +6,37 @@
 #include "avrpin.hpp"
 
 template< typename Button_,
-            typename Led_,
-            typename ParallelOutput1_,
-            typename ParallelOutput2_,
-            typename ParallelOutput3_,
-            typename ParallelOutput4_,
-            typename ParallelOutput5_,
-            typename ParallelOutput6_,
-            typename ParallelOutput7_,
-            typename Gnd_,
-            typename SerialOutput_,
-            typename InvertedShiftRegisterClear_,
-            typename ShiftRegisterClock_,
-            typename ShowRegisterClock_,
-            typename InvertedOutputEnable_,
-            typename SerialInput_,
-            typename ParallelOutput0_,
-            typename Vcc_>
+          typename Led_,
+          typename ParallelOutput1_,
+          typename ParallelOutput2_,
+          typename ParallelOutput3_,
+          typename ParallelOutput4_,
+          typename ParallelOutput5_,
+          typename ParallelOutput6_,
+          typename ParallelOutput7_,
+          typename Gnd_,
+          typename SerialOutput_,
+          typename ParallelOutput0_,
+          typename Vcc_,
+          typename ShiftRegisterDriver>
 struct ShiftRegisterTester : public DeviceTester<Button_,
-                                                Led_,
-                                                ParallelOutput1_,
-                                                ParallelOutput2_,
-                                                ParallelOutput3_,
-                                                ParallelOutput4_,
-                                                ParallelOutput5_,
-                                                ParallelOutput6_,
-                                                ParallelOutput7_,
-                                                Gnd_,
-                                                SerialOutput_,
-                                                InvertedShiftRegisterClear_,
-                                                ShiftRegisterClock_,
-                                                ShowRegisterClock_,
-                                                InvertedOutputEnable_,
-                                                SerialInput_,
-                                                ParallelOutput0_,
-                                                Vcc_>
+                                                 Led_,
+                                                 ParallelOutput1_,
+                                                 ParallelOutput2_,
+                                                 ParallelOutput3_,
+                                                 ParallelOutput4_,
+                                                 ParallelOutput5_,
+                                                 ParallelOutput6_,
+                                                 ParallelOutput7_,
+                                                 Gnd_,
+                                                 SerialOutput_,
+                                                 typename ShiftRegisterDriver::InvertedShiftRegisterClear,
+                                                 typename ShiftRegisterDriver::ShiftRegisterClock,
+                                                 typename ShiftRegisterDriver::ShowRegisterClock,
+                                                 typename ShiftRegisterDriver::InvertedOutputEnable,
+                                                 typename ShiftRegisterDriver::SerialInput,
+                                                 ParallelOutput0_,
+                                                 Vcc_>
 {
 protected:
     typedef DeviceTester<Button_,
@@ -54,11 +50,11 @@ protected:
                         ParallelOutput7_,
                         Gnd_,
                         SerialOutput_,
-                        InvertedShiftRegisterClear_,
-                        ShiftRegisterClock_,
-                        ShowRegisterClock_,
-                        InvertedOutputEnable_,
-                        SerialInput_,
+                        typename ShiftRegisterDriver::InvertedShiftRegisterClear,
+                        typename ShiftRegisterDriver::ShiftRegisterClock,
+                        typename ShiftRegisterDriver::ShowRegisterClock,
+                        typename ShiftRegisterDriver::InvertedOutputEnable,
+                        typename ShiftRegisterDriver::SerialInput,
                         ParallelOutput0_,
                         Vcc_> DeviceTester_;
 public:
@@ -72,11 +68,11 @@ public:
     typedef ParallelOutput7_ ParallelOutput7Pin;
     typedef Gnd_ GndPin;
     typedef SerialOutput_ SerialOutputPin;
-    typedef InvertedShiftRegisterClear_ InvertedShiftRegisterClearPin;
-    typedef ShiftRegisterClock_ ShiftRegisterClockPin;
-    typedef ShowRegisterClock_ ShowRegisterClockPin;
-    typedef InvertedOutputEnable_ InvertedOutputEnablePin;
-    typedef SerialInput_ SerialInputPin;
+    typedef typename ShiftRegisterDriver::InvertedShiftRegisterClear InvertedShiftRegisterClearPin;
+    typedef typename ShiftRegisterDriver::ShiftRegisterClock ShiftRegisterClockPin;
+    typedef typename ShiftRegisterDriver::ShowRegisterClock ShowRegisterClockPin;
+    typedef typename ShiftRegisterDriver::InvertedOutputEnable InvertedOutputEnablePin;
+    typedef typename ShiftRegisterDriver::SerialInput SerialInputPin;
     typedef ParallelOutput0_ ParallelOutput0Pin;
     typedef Vcc_ VccPin;
 
@@ -104,42 +100,42 @@ public:
 
     static bool checkOutputEnabled()
     {
-        return DeviceTester_::template checkDevicePinPort<InvertedOutputEnable_>(AvrInputOutput::LOW);
+        return DeviceTester_::template checkDevicePinPort<InvertedOutputEnablePin>(AvrInputOutput::LOW);
     }
 
     static bool checkInvertedShiftRegisterClearing()
     {
-        return DeviceTester_::template checkDevicePinPort<InvertedShiftRegisterClear_>(AvrInputOutput::LOW);
+        return DeviceTester_::template checkDevicePinPort<InvertedShiftRegisterClearPin>(AvrInputOutput::LOW);
     }
 
     static bool checkOutputEnable(AvrInputOutput::PinState const pinState)
     {
-        return DeviceTester_::template checkDevicePinPort<InvertedOutputEnable_>(pinState);
+        return DeviceTester_::template checkDevicePinPort<InvertedOutputEnablePin>(pinState);
     }
 
     static bool checkInvertedShiftRegisterClear(AvrInputOutput::PinState const pinState)
     {
-        return DeviceTester_::template checkDevicePinPort<InvertedShiftRegisterClear_>(pinState);
+        return DeviceTester_::template checkDevicePinPort<InvertedShiftRegisterClearPin>(pinState);
     }
 
     static bool checkShiftRegisterClock(AvrInputOutput::PinState const pinState)
     {
-        return DeviceTester_::template checkDevicePinPort<ShiftRegisterClock_>(pinState);
+        return DeviceTester_::template checkDevicePinPort<ShiftRegisterClockPin>(pinState);
     }
 
     static bool checkShowRegisterClock(AvrInputOutput::PinState const pinState)
     {
-        return DeviceTester_::template checkDevicePinPort<ShowRegisterClock_>(pinState);
+        return DeviceTester_::template checkDevicePinPort<ShowRegisterClockPin>(pinState);
     }
 
     static bool checkSerialOutput(AvrInputOutput::PinState const pinState)
     {
-        return DeviceTester_::template checkDevicePinPort<SerialOutput_>(pinState);
+        return DeviceTester_::template checkDevicePinPort<SerialOutputPin>(pinState);
     }
 
     static bool checkSerialInput(AvrInputOutput::PinState const pinState)
     {
-        return DeviceTester_::template checkDevicePinPort<SerialInput_>(pinState);
+        return DeviceTester_::template checkDevicePinPort<SerialInputPin>(pinState);
     }
 
     static bool checkParallelOutput(uint8_t const expectedBitMask)
@@ -172,7 +168,6 @@ public:
         return currentBitMask;
     }
 
-    template<typename ShiftRegisterDriver>
     static bool test()
     {
         ShiftRegisterTester::initialize();
@@ -222,5 +217,6 @@ public:
     }
 
 };
+
 
 #endif // SHIFTREGISTERTESTER_HPP

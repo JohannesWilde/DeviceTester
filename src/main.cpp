@@ -13,6 +13,7 @@
 int main()
 {
     typedef ArduinoUno arduinoUno;
+    typedef ShiftRegister<8, arduinoUno::A1, arduinoUno::D12, arduinoUno::D13, arduinoUno::A0, arduinoUno::D11> shiftRegister;
     typedef ShiftRegisterTester<arduinoUno::A4,
                                 arduinoUno::A5,
                                 arduinoUno::D2,
@@ -24,17 +25,11 @@ int main()
                                 arduinoUno::D8,
                                 arduinoUno::D9,
                                 arduinoUno::D10,
-                                arduinoUno::D11,
-                                arduinoUno::D12,
-                                arduinoUno::D13,
-                                arduinoUno::A0,
-                                arduinoUno::A1,
                                 arduinoUno::A2,
-                                arduinoUno::A3> shiftRegisterTester;
+                                arduinoUno::A3,
+                                shiftRegister> shiftRegisterTester;
 
-    typedef ShiftRegister<8, arduinoUno::A1, arduinoUno::D12, arduinoUno::D13, arduinoUno::A0, arduinoUno::D11> shiftRegister;
-
-    shiftRegisterTester::test<shiftRegister>();
+    shiftRegisterTester::test();
 
     return 0;
 }
