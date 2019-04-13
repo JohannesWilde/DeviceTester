@@ -10,8 +10,6 @@
 #include <avr/sfr_defs.h>
 #include <stdint.h>
 
-// The  lie in the data memory right after the
-// general purpose registers
 // The first 64 [6-bit, 0x40] special function registers [SFRs] can be accessed using specialized
 // assembler instructions [e.g. in, out, ... and the first 32 with even more specialized like sbi,
 // cbi, ...] - this is called "direct I/O access".
