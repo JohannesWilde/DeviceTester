@@ -45,7 +45,7 @@ public:
         InvertedShiftRegisterClear_::clearPort();  // clear the shift register
         showShiftRegister();                       // clear the show register
         ShiftRegisterClock_::clearPort();
-        ShowRegisterClock_::clearPort;
+        ShowRegisterClock_::clearPort();
         InvertedOutputEnable_::clearPort();
     }
 
