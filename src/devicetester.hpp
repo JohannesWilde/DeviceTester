@@ -164,14 +164,28 @@ public:
         return ( DevicePin::readDdr() == pinState );
     }
 
+    struct TestResult
+    {
+        // This constructor is supposed to take care of the default initialization
+        // of the bit-field members.
+        TestResult () :
+            success(false)
+        {
+            // intentionally left empty
+        }
+
+        bool success : 1;
+    };
+
     static bool test()
     {
         // every device tester should implement a test() method
         // the return value will show whether the test was successfull or not
-        return false;
+        TestResult testResult;
+        return testResult;
     }
 
-    // Every device tester should implement a turnOff() method.
+    // Every device tester should implement a turnOffDevice() method.
     // This is supposed to set all OUTPUT_HIGH to OUTPUT_LOW and all
     // INPUT_PULLUP to INPUT in the correct order, i.e. VCC typically last.
     static void turnOffDevice()
@@ -180,7 +194,7 @@ public:
        enableButton();  // button enabled
     }
 
-    // Every device tester should implement a turnOn() method.
+    // Every device tester should implement a turnOnDevice() method.
     // This is supposed to set all OUTPUT_HIGH and INPUT_PULLUP
     // in the correct order, i.e. VCC typically first.
     static void turnOnDevice()
