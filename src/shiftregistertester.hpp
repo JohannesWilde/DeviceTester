@@ -18,7 +18,7 @@ template< typename Button_,
           typename SerialOutput_,
           typename ParallelOutput0_,
           typename Vcc_,
-          typename ShiftRegisterDriver>
+          typename ShiftRegisterDriver_>
 struct ShiftRegisterTester : public DeviceTester<Button_,
                                                  Led_,
                                                  ParallelOutput1_,
@@ -30,11 +30,11 @@ struct ShiftRegisterTester : public DeviceTester<Button_,
                                                  ParallelOutput7_,
                                                  Gnd_,
                                                  SerialOutput_,
-                                                 typename ShiftRegisterDriver::InvertedShiftRegisterClear,
-                                                 typename ShiftRegisterDriver::ShiftRegisterClock,
-                                                 typename ShiftRegisterDriver::ShowRegisterClock,
-                                                 typename ShiftRegisterDriver::InvertedOutputEnable,
-                                                 typename ShiftRegisterDriver::SerialInput,
+                                                 typename ShiftRegisterDriver_::InvertedShiftRegisterClear,
+                                                 typename ShiftRegisterDriver_::ShiftRegisterClock,
+                                                 typename ShiftRegisterDriver_::ShowRegisterClock,
+                                                 typename ShiftRegisterDriver_::InvertedOutputEnable,
+                                                 typename ShiftRegisterDriver_::SerialInput,
                                                  ParallelOutput0_,
                                                  Vcc_>
 {
@@ -50,11 +50,11 @@ protected:
                         ParallelOutput7_,
                         Gnd_,
                         SerialOutput_,
-                        typename ShiftRegisterDriver::InvertedShiftRegisterClear,
-                        typename ShiftRegisterDriver::ShiftRegisterClock,
-                        typename ShiftRegisterDriver::ShowRegisterClock,
-                        typename ShiftRegisterDriver::InvertedOutputEnable,
-                        typename ShiftRegisterDriver::SerialInput,
+                        typename ShiftRegisterDriver_::InvertedShiftRegisterClear,
+                        typename ShiftRegisterDriver_::ShiftRegisterClock,
+                        typename ShiftRegisterDriver_::ShowRegisterClock,
+                        typename ShiftRegisterDriver_::InvertedOutputEnable,
+                        typename ShiftRegisterDriver_::SerialInput,
                         ParallelOutput0_,
                         Vcc_> DeviceTester_;
 public:
@@ -68,11 +68,12 @@ public:
     typedef ParallelOutput7_ ParallelOutput7Pin;
     typedef Gnd_ GndPin;
     typedef SerialOutput_ SerialOutputPin;
-    typedef typename ShiftRegisterDriver::InvertedShiftRegisterClear InvertedShiftRegisterClearPin;
-    typedef typename ShiftRegisterDriver::ShiftRegisterClock ShiftRegisterClockPin;
-    typedef typename ShiftRegisterDriver::ShowRegisterClock ShowRegisterClockPin;
-    typedef typename ShiftRegisterDriver::InvertedOutputEnable InvertedOutputEnablePin;
-    typedef typename ShiftRegisterDriver::SerialInput SerialInputPin;
+    typedef ShiftRegisterDriver_ ShiftRegisterDriver;
+    typedef typename ShiftRegisterDriver_::InvertedShiftRegisterClear InvertedShiftRegisterClearPin;
+    typedef typename ShiftRegisterDriver_::ShiftRegisterClock ShiftRegisterClockPin;
+    typedef typename ShiftRegisterDriver_::ShowRegisterClock ShowRegisterClockPin;
+    typedef typename ShiftRegisterDriver_::InvertedOutputEnable InvertedOutputEnablePin;
+    typedef typename ShiftRegisterDriver_::SerialInput SerialInputPin;
     typedef ParallelOutput0_ ParallelOutput0Pin;
     typedef Vcc_ VccPin;
 
@@ -170,15 +171,16 @@ public:
 
     static bool test()
     {
+        // initialize
         ShiftRegisterTester::initialize();
-
-        ShiftRegisterDriver::initialize();
+        ShiftRegisterDriver_::initialize();
         uint8_t data[1] = {0xff};
-        ShiftRegisterDriver::enableOutput();
+
+        ShiftRegisterDriver_::enableOutput();
 
         data[0] = 0xff;
-        ShiftRegisterDriver::shiftInBits(data);
-        ShiftRegisterDriver::showShiftRegister();
+        ShiftRegisterDriver_::shiftInBits(data);
+        ShiftRegisterDriver_::showShiftRegister();
         _delay_ms(1000);
 
         ShiftRegisterTester::enableLeds();
@@ -187,24 +189,24 @@ public:
         if ( ShiftRegisterTester::checkOutputEnabled() )
         {
             data[0] = 0x55;
-            ShiftRegisterDriver::shiftInBits(data);
-            ShiftRegisterDriver::showShiftRegister();
+            ShiftRegisterDriver_::shiftInBits(data);
+            ShiftRegisterDriver_::showShiftRegister();
         }
 
 
         while (true)
         {
             _delay_ms(500);
-            ShiftRegisterDriver::shiftInBits(data);
-            ShiftRegisterDriver::showShiftRegister();
+            ShiftRegisterDriver_::shiftInBits(data);
+            ShiftRegisterDriver_::showShiftRegister();
 
             if (!ShiftRegisterTester::checkParallelOutput(data[0]))
             {
                 data[0] = ShiftRegisterTester::compareParallelOutputTo(data[0]);
                 while (true)
                 {
-                    ShiftRegisterDriver::shiftInBits(data);
-                    ShiftRegisterDriver::showShiftRegister();
+                    ShiftRegisterDriver_::shiftInBits(data);
+                    ShiftRegisterDriver_::showShiftRegister();
                     _delay_ms(500);
                     data[0] = ~data[0];
                 }
@@ -214,6 +216,20 @@ public:
         }
 
         return false;
+    }
+
+    static void turnOffDevice()
+    {
+        ShiftRegisterDriver_::turnOff();
+        Vcc_::clearPort();
+        DeviceTester_::turnOff();
+    }
+
+    static void turnOnDevice()
+    {
+        ShiftRegisterDriver_::turnOn();
+        Vcc_::setPort();
+        DeviceTester_::turnOn();
     }
 
 };

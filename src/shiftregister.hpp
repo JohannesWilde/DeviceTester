@@ -31,6 +31,31 @@ public:
         InvertedShiftRegisterClear_::setType(AvrInputOutput::OUTPUT_HIGH); // do not clear the shift register by default
         ShiftRegisterClock_::setType(AvrInputOutput::OUTPUT_HIGH);  // because data is clocked in on LOW->HIGH transition, below methods will always clear
         ShowRegisterClock_::setType(AvrInputOutput::OUTPUT_HIGH);   // and set [in that order], which ensures that a LOW->HIGH transition occurs.
+        clearShiftRegister();                                       // clear both registers
+        showShiftRegister();
+    }
+
+    static void turnOff()
+    {
+        // This assumes ShiftRegister was initialized previously.
+        // Here clearPort() instead of the ShiftRegister methods are used in order
+        // to emphasize that all ports should be powered off - the actual functionality is not that important.
+        // A side-effect of this is that both the shift and the show register will be cleared afterwards.
+        SerialInput_::clearPort();
+        InvertedShiftRegisterClear_::clearPort();  // clear the shift register
+        showShiftRegister();                       // clear the show register
+        ShiftRegisterClock_::clearPort();
+        ShowRegisterClock_::clearPort;
+        InvertedOutputEnable_::clearPort();
+    }
+
+
+    static void turnOn()
+    {
+        // This assumes ShiftRegister was initialized previously.
+        disableOutput();
+        SerialInput_::clearPort();
+        ShiftRegisterClock_::setPort();
         clearShiftRegister();
         showShiftRegister();
     }

@@ -103,6 +103,16 @@ public:
         LedPin_::clearPort();
     }
 
+    static void enableButton()
+    {
+        ButtonPin_::setPort();
+    }
+
+    static void disableButton()
+    {
+        ButtonPin_::clearPort();
+    }
+
     // wait until button is pressed
     static void waitForButtonPressAndRelease()
     {
@@ -154,12 +164,29 @@ public:
         return ( DevicePin::readDdr() == pinState );
     }
 
-    template<typename DeviceDriver>
     static bool test()
     {
         // every device tester should implement a test() method
         // the return value will show whether the test was successfull or not
         return false;
+    }
+
+    // Every device tester should implement a turnOff() method.
+    // This is supposed to set all OUTPUT_HIGH to OUTPUT_LOW and all
+    // INPUT_PULLUP to INPUT in the correct order, i.e. VCC typically last.
+    static void turnOffDevice()
+    {
+       enableLeds();    // leds enabled to see erroneous behaviour
+       enableButton();  // button enabled
+    }
+
+    // Every device tester should implement a turnOn() method.
+    // This is supposed to set all OUTPUT_HIGH and INPUT_PULLUP
+    // in the correct order, i.e. VCC typically first.
+    static void turnOnDevice()
+    {
+       disableLeds();   // leds disabled by default
+       enableButton();  // button enabled
     }
 };
 
