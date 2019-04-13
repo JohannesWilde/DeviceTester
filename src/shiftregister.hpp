@@ -29,8 +29,9 @@ public:
         InvertedOutputEnable_::setType(AvrInputOutput::OUTPUT_HIGH); // disable output by default
         SerialInput_::setType(AvrInputOutput::OUTPUT_LOW);           // default LOW
         InvertedShiftRegisterClear_::setType(AvrInputOutput::OUTPUT_HIGH); // do not clear the shift register by default
-        ShiftRegisterClock_::setType(AvrInputOutput::OUTPUT_HIGH);  // because data is clocked in on LOW->HIGH transition, below methods will always clear
-        ShowRegisterClock_::setType(AvrInputOutput::OUTPUT_HIGH);   // and set [in that order], which ensures that a LOW->HIGH transition occurs.
+        ShiftRegisterClock_::setType(AvrInputOutput::OUTPUT_LOW);  // default to LOW
+        ShowRegisterClock_::setType(AvrInputOutput::OUTPUT_LOW);   // default to LOW
+        // the shift and the show register will be cleared during initialization
         clearShiftRegister();                                       // clear both registers
         showShiftRegister();
     }
@@ -40,13 +41,12 @@ public:
         // This assumes ShiftRegister was initialized previously.
         // Here clearPort() instead of the ShiftRegister methods are used in order
         // to emphasize that all ports should be powered off - the actual functionality is not that important.
-        // A side-effect of this is that both the shift and the show register will be cleared afterwards.
         SerialInput_::clearPort();
-        InvertedShiftRegisterClear_::clearPort();  // clear the shift register
-        showShiftRegister();                       // clear the show register
         ShiftRegisterClock_::clearPort();
+        InvertedShiftRegisterClear_::clearPort();
+        showShiftRegister();
         ShowRegisterClock_::clearPort();
-        InvertedOutputEnable_::clearPort();
+        InvertedOutputEnable_::clearPort();         // this enables the output - which was cleared however.
     }
 
 
@@ -54,9 +54,10 @@ public:
     {
         // This assumes ShiftRegister was initialized previously.
         disableOutput();
-        SerialInput_::clearPort();
-        ShiftRegisterClock_::setPort();
+//        ShiftRegisterClock_::clearPort(); // currently unneeded, as clearShiftRegister() does so anyway.
         clearShiftRegister();
+        ShowRegisterClock_::clearPort();
+        SerialInput_::clearPort();
         showShiftRegister();
     }
 
@@ -72,13 +73,20 @@ public:
 
     static void clearShiftRegister()
     {
+        // this method leaves the show register unchanged!
+        // ShiftRegisterClock_ is expected to be LOW when unused, but as InvertedShiftRegisterClear_ currently
+        // does not reset the internal ShiftRegister permanently while ShiftRegisterClock_ is HIGH, assure
+        // so here!
+        ShiftRegisterClock_::clearPort();
         lowHighClock<InvertedShiftRegisterClear_>();
     }
 
     // this does not mean, that the output will be visible, if the output is disabled!
     static void showShiftRegister()
     {
-        lowHighClock<ShowRegisterClock_>();
+        // toggle here, as thus it shifts in 1 bit regardless of whether ShowRegisterClock_ was HIGH or LOW previously.
+        ShowRegisterClock_::togglePort();
+        ShowRegisterClock_::togglePort();
     }
 
     // This methods expects an array that contains at least ShiftRegister::length bits.
@@ -109,7 +117,9 @@ public:
                                 SerialInput_::setPort() :
                                 SerialInput_::clearPort();
                     curBitMask >>= 1; // next bit [lower significance]
-                    lowHighClock<ShiftRegisterClock_>();
+                    // toggle here, as thus it shifts in 1 bit regardless of whether ShowRegisterClock_ was HIGH or LOW previously.
+                    ShiftRegisterClock_::togglePort();
+                    ShiftRegisterClock_::togglePort();
                 }
                 // next byte
                 --bitStreamArrayByte; // goto previous byte in array
