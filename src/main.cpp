@@ -29,7 +29,11 @@ int main()
                                 arduinoUno::A3,
                                 shiftRegister> shiftRegisterTester;
 
-    shiftRegisterTester::test();
+    while (true)
+    {
+        shiftRegisterTester::test();
+        shiftRegisterTester::waitForButtonPressAndRelease();
+    }
 
     return 0;
 }

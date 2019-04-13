@@ -228,7 +228,7 @@ public:
 
         testResult.clearShiftRegister = testShiftRegisterClear();
 
-        uint8_t failedPins = testParallelOutput();
+        uint8_t const failedPins = testParallelOutput();
         testResult.parallelOutput0 = ((failedPins & (0x01 << 0)) == 0) ? true : false;
         testResult.parallelOutput1 = ((failedPins & (0x01 << 1)) == 0) ? true : false;
         testResult.parallelOutput2 = ((failedPins & (0x01 << 2)) == 0) ? true : false;
@@ -262,28 +262,47 @@ public:
             testResult.success = true;
         }
 
-        if (false == testResult.success)
+        if (true) // false == testResult.success)
         {
             DeviceTester_::enableLeds();
             ShiftRegisterDriver_::enableOutput();
-//            uint8_t const data = ((testResult.parallelOutput0 ? 1 : 0) << 0) |
-//                   ((testResult.parallelOutput1 ? 1 : 0) << 1) |
-//                   ((testResult.parallelOutput2 ? 1 : 0) << 2) |
-//                   ((testResult.parallelOutput3 ? 1 : 0) << 3) |
-//                   ((testResult.parallelOutput4 ? 1 : 0) << 4) |
-//                   ((testResult.parallelOutput5 ? 1 : 0) << 5) |
-//                   ((testResult.parallelOutput6 ? 1 : 0) << 6) |
-//                   ((testResult.parallelOutput7 ? 1 : 0) << 7);
-            uint8_t const data = ((testResult.disableOutput ? 1 : 0) << 0) |
-                                   ((testResult.enableOutput ? 1 : 0) << 1) |
-                                   ((testResult.serialOutput ? 1 : 0) << 2) |
-                                   ((testResult.showShiftRegister ? 1 : 0) << 3) |
-                                   ((testResult.clearShiftRegister ? 1 : 0) << 4) |
-                                   ((testResult.turnOff ? 1 : 0) << 5) |
-                                   ((testResult.turnOn ? 1 : 0) << 6) |
-                                   ((testResult.success ? 1 : 0) << 7);
-            ShiftRegisterDriver_::shiftInBits(&data);
-            ShiftRegisterDriver_::showShiftRegister();
+            uint8_t const dataParallelOutput =
+                   ((testResult.parallelOutput0 ? 1 : 0) << 0) |
+                   ((testResult.parallelOutput1 ? 1 : 0) << 1) |
+                   ((testResult.parallelOutput2 ? 1 : 0) << 2) |
+                   ((testResult.parallelOutput3 ? 1 : 0) << 3) |
+                   ((testResult.parallelOutput4 ? 1 : 0) << 4) |
+                   ((testResult.parallelOutput5 ? 1 : 0) << 5) |
+                   ((testResult.parallelOutput6 ? 1 : 0) << 6) |
+                   ((testResult.parallelOutput7 ? 1 : 0) << 7);
+            if (0xff != dataParallelOutput)
+            {
+                uint8_t zero = 0x00;
+                while (true)
+                {
+                    ShiftRegisterDriver_::shiftInBits(&dataParallelOutput);
+                    ShiftRegisterDriver_::showShiftRegister();
+                    ShiftRegisterDriver_::clearShiftRegister(); // keep SerialOutput_ from blinking
+                    _delay_ms(500);
+                    ShiftRegisterDriver_::shiftInBits(&zero);
+                    ShiftRegisterDriver_::showShiftRegister();
+                    ShiftRegisterDriver_::clearShiftRegister(); // keep SerialOutput_ from blinking
+                    _delay_ms(500);
+                }
+            }
+            else
+            {
+                uint8_t const dataOther = ((testResult.disableOutput ? 1 : 0) << 0) |
+                                       ((testResult.enableOutput ? 1 : 0) << 1) |
+                                       ((testResult.serialOutput ? 1 : 0) << 2) |
+                                       ((testResult.showShiftRegister ? 1 : 0) << 3) |
+                                       ((testResult.clearShiftRegister ? 1 : 0) << 4) |
+                                       ((testResult.turnOff ? 1 : 0) << 5) |
+                                       ((testResult.turnOn ? 1 : 0) << 6) |
+                                       ((testResult.success ? 1 : 0) << 7);
+                ShiftRegisterDriver_::shiftInBits(&dataOther);
+                ShiftRegisterDriver_::showShiftRegister();
+            }
             DeviceTester_::waitForButtonPressAndRelease();
             DeviceTester_::disableLeds();
             ShiftRegisterDriver_::disableOutput();
