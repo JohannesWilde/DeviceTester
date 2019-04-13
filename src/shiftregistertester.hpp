@@ -245,10 +245,52 @@ public:
         ParallelOutput5_::setPort();
         ParallelOutput6_::setPort();
         ParallelOutput7_::setPort();
-        DeviceTester_::turnOn();
+        DeviceTester_::turnOnDevice();
     }
 
 };
 
 
 #endif // SHIFTREGISTERTESTER_HPP
+
+
+
+//// test clear shiftregister
+//DeviceTester_::enableLeds();
+//{
+//    data = 0xff;
+//    ShiftRegisterDriver_::shiftInBits(&data);
+//    ShiftRegisterDriver_::showShiftRegister();
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::ShiftRegisterClock::setPort();
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::InvertedShiftRegisterClear::clearPort();  // this does not actually clear the shift register content [see clearShiftRegister()]
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::showShiftRegister();
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::InvertedShiftRegisterClear::setPort();  // this does not actually clear the shift register content [see clearShiftRegister()]
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::showShiftRegister();
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+
+//    ShiftRegisterDriver_::ShiftRegisterClock::clearPort();
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::InvertedShiftRegisterClear::clearPort();  // this does not actually clear the shift register content [see clearShiftRegister()]
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::showShiftRegister();
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::InvertedShiftRegisterClear::setPort();  // this does not actually clear the shift register content [see clearShiftRegister()]
+//    DeviceTester_::waitForButtonPressAndRelease();
+
+//    ShiftRegisterDriver_::showShiftRegister();
+//    DeviceTester_::waitForButtonPressAndRelease();
+//}
