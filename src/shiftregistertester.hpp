@@ -80,13 +80,13 @@ public:
     // this will reconfigure the ports - so set the sheftRegister driver after having called this.
     static void initialize()
     {
-        DeviceTester_::initialize(AvrInputOutput::INPUT,
-                                  AvrInputOutput::INPUT,
-                                  AvrInputOutput::INPUT,
-                                  AvrInputOutput::INPUT,
-                                  AvrInputOutput::INPUT,
-                                  AvrInputOutput::INPUT,
-                                  AvrInputOutput::INPUT,
+        DeviceTester_::initialize(AvrInputOutput::INPUT_PULLUP, // use internal pullups as to have a determined state even if the shiftregister output is disabled.
+                                  AvrInputOutput::INPUT_PULLUP,
+                                  AvrInputOutput::INPUT_PULLUP,
+                                  AvrInputOutput::INPUT_PULLUP,
+                                  AvrInputOutput::INPUT_PULLUP,
+                                  AvrInputOutput::INPUT_PULLUP,
+                                  AvrInputOutput::INPUT_PULLUP,
                                   AvrInputOutput::OUTPUT_LOW,   // Gnd
                                   AvrInputOutput::INPUT,        // SerialOutput
                                   AvrInputOutput::OUTPUT_HIGH,  // InvertedShiftRegisterClear
@@ -94,7 +94,7 @@ public:
                                   AvrInputOutput::OUTPUT_HIGH,  // ShowRegisterClock
                                   AvrInputOutput::OUTPUT_HIGH,  // InvertedOutputEnable_
                                   AvrInputOutput::OUTPUT_LOW,   // SerialInput
-                                  AvrInputOutput::INPUT,
+                                  AvrInputOutput::INPUT_PULLUP,
                                   AvrInputOutput::OUTPUT_HIGH   // Vcc
                                   );
     }
@@ -197,30 +197,38 @@ public:
         while (true)
         {
             _delay_ms(500);
-            ShiftRegisterDriver_::shiftInBits(data);
+            ShiftRegisterDriver_::shiftInBits(&data);
             ShiftRegisterDriver_::showShiftRegister();
 
-            if (!ShiftRegisterTester::checkParallelOutput(data[0]))
+            if (!ShiftRegisterTester::checkParallelOutput(data))
             {
-                data[0] = ShiftRegisterTester::compareParallelOutputTo(data[0]);
+                data = ShiftRegisterTester::compareParallelOutputTo(data);
                 while (true)
                 {
-                    ShiftRegisterDriver_::shiftInBits(data);
+                    ShiftRegisterDriver_::shiftInBits(&data);
                     ShiftRegisterDriver_::showShiftRegister();
                     _delay_ms(500);
-                    data[0] = ~data[0];
+                    data = ~data;
                 }
             }
 
-            data[0]--;
+            data--;
         }
 
-        return false;
+        return testResult;
     }
 
     static void turnOffDevice()
     {
         ShiftRegisterDriver_::turnOff();
+        ParallelOutput0_::clearPort();
+        ParallelOutput1_::clearPort();
+        ParallelOutput2_::clearPort();
+        ParallelOutput3_::clearPort();
+        ParallelOutput4_::clearPort();
+        ParallelOutput5_::clearPort();
+        ParallelOutput6_::clearPort();
+        ParallelOutput7_::clearPort();
         Vcc_::clearPort();
         DeviceTester_::turnOff();
     }
@@ -229,6 +237,14 @@ public:
     {
         ShiftRegisterDriver_::turnOn();
         Vcc_::setPort();
+        ParallelOutput0_::setPort();
+        ParallelOutput1_::setPort();
+        ParallelOutput2_::setPort();
+        ParallelOutput3_::setPort();
+        ParallelOutput4_::setPort();
+        ParallelOutput5_::setPort();
+        ParallelOutput6_::setPort();
+        ParallelOutput7_::setPort();
         DeviceTester_::turnOn();
     }
 
