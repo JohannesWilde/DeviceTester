@@ -70,13 +70,13 @@ struct AvrInternalRegister
     typedef RegisterType Type;
 
     // Set all register bits, which are 1 in bitMask, 1 [HIGH].
-    static void setBitMask(uint8_t const bitMask)
+    static void setBitMask(RegisterType const bitMask)
     {
         *registerPointer<registerAddress, RegisterType>() |= bitMask;
     }
 
     // Set all register bits, which are 1 in bitMask, 0 [LOW].
-    static void clearBitMask(uint8_t const bitMask)
+    static void clearBitMask(RegisterType const bitMask)
     {
         *registerPointer<registerAddress, RegisterType>() &= ~bitMask;
     }
@@ -87,7 +87,7 @@ struct AvrInternalRegister
     // 0        | 1         | 1         - unchanged
     // 1        | 0         | 1         - toggled
     // 1        | 1         | 0         - toggled
-    static void toggleBitMask(uint8_t const bitMask)
+    static void toggleBitMask(RegisterType const bitMask)
     {
         *registerPointer<registerAddress, RegisterType>() ^= bitMask;
     }
