@@ -330,6 +330,7 @@ public:
 
     static void turnOnDevice()
     {
+        DeviceTester_::turnOnDevice();
         Vcc_::setPort();
         ShiftRegisterDriver_::turnOn();
         ParallelOutput0_::setPort();
@@ -340,7 +341,6 @@ public:
         ParallelOutput5_::setPort();
         ParallelOutput6_::setPort();
         ParallelOutput7_::setPort();
-        DeviceTester_::turnOnDevice();
     }
 
     // all test routines expect the shiftRegisterDriver to be initialized,
