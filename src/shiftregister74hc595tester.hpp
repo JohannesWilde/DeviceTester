@@ -1,5 +1,5 @@
-#ifndef SHIFTREGISTERTESTER_HPP
-#define SHIFTREGISTERTESTER_HPP
+#ifndef SHIFTREGISTER74HC595TESTER_HPP
+#define SHIFTREGISTER74HC595TESTER_HPP
 
 #include "devicetester.hpp"
 #include "avrinputoutput.hpp"
@@ -19,7 +19,7 @@ template< typename Button_,
           typename ParallelOutput0_,
           typename Vcc_,
           typename ShiftRegisterDriver_>
-struct ShiftRegisterTester : public DeviceTester<Button_,
+struct ShiftRegister74HC595Tester : public DeviceTester<Button_,
                                                  Led_,
                                                  ParallelOutput1_,
                                                  ParallelOutput2_,
@@ -571,4 +571,4 @@ public:
 };
 
 
-#endif // SHIFTREGISTERTESTER_HPP
+#endif // SHIFTREGISTER74HC595TESTER_HPP

@@ -1,5 +1,5 @@
-#ifndef SHIFTREGISTER_HPP
-#define SHIFTREGISTER_HPP
+#ifndef SHIFTREGISTER74HC595_HPP
+#define SHIFTREGISTER74HC595_HPP
 
 #include <stdint.h>
 #include "avrinputoutput.hpp"
@@ -10,7 +10,7 @@ template<unsigned const length_, typename SerialInput_, typename ShiftRegisterCl
          typename ShowRegisterClock_, typename InvertedOutputEnable_, typename InvertedShiftRegisterClear_>
 // length - number of pins
 // the rest - AvrPin types
-struct ShiftRegister
+struct ShiftRegister74HC595
 {
 public:
     enum
@@ -45,8 +45,8 @@ public:
     // this driver will be LOW [Vcc will be someones else's responsibility...].
     static void turnOff()
     {
-        // This assumes ShiftRegister was initialized previously.
-        // Here clearPort() instead of the ShiftRegister methods are used in order
+        // This assumes ShiftRegister74HC595 was initialized previously.
+        // Here clearPort() instead of the ShiftRegister74HC595 methods are used in order
         // to emphasize that all ports should be powered off - the actual functionality is not that important.
         SerialInput_::clearPort();
         ShiftRegisterClock_::clearPort();
@@ -62,7 +62,7 @@ public:
     // and SerialInput_ to LOW.
     static void turnOn()
     {
-        // This assumes ShiftRegister was initialized previously.
+        // This assumes ShiftRegister74HC595 was initialized previously.
         disableOutput();
 //        ShiftRegisterClock_::clearPort(); // currently unneeded, as clearShiftRegister() does so anyway.
         clearShiftRegister();
@@ -99,7 +99,7 @@ public:
         ShowRegisterClock_::togglePort();
     }
 
-    // This methods expects an array that contains at least ShiftRegister::length bits.
+    // This methods expects an array that contains at least ShiftRegister74HC595::length bits.
     // The least significant bit [LSB, 0x01] of the least significant byte [LSBy,
     // bitStreamArray[0]] in the array will be at q0 of the first connected shift-register.
     // The most significant bit [MSB] of the most significant byte [MSBy] will correspondingly
@@ -141,4 +141,4 @@ public:
     }
 };
 
-#endif // SHIFTREGISTER_H
+#endif // SHIFTREGISTER74HC595_HPP
