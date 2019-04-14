@@ -66,14 +66,24 @@ int main()
     // ---------------
     // now clear the shift register
     nSRCLR::clearPort();
+
+    // <- here Q_H' is cleared, as expected
+
     // show cleared
     RCLK::clearPort();
     RCLK::setPort();
 
+    // <- here the Q_x are cleared, as expected
+
     // should be cleared now, so take away the clear-signal
     nSRCLR::setPort();
+
+    // <- here however Q_H' goes HIGH again
+
     // show cleared
     RCLK::clearPort();
     RCLK::setPort();
+
+    // <- and here all Q_x are HIGH as well
 
 }
