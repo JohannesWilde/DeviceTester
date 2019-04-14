@@ -46,7 +46,7 @@ int main()
 
     // pin setup
     nOE::setType(AvrInputOutput::OUTPUT_LOW); // enable  output
-    RCLK::setType(AvrInputOutput::OUTPUT_HIGH);
+    RCLK::setType(AvrInputOutput::OUTPUT_LOW);
     SRCLK::setType(AvrInputOutput::OUTPUT_HIGH);
     nSRCLR::setType(AvrInputOutput::OUTPUT_HIGH); // do not clear
 
@@ -54,8 +54,8 @@ int main()
     SER::setType(AvrInputOutput::OUTPUT_HIGH);
     for (uint8_t pinNumber = 0; pinNumber < 8; ++pinNumber)
     {
-        SRCLK::clearPort();
         SRCLK::setPort();
+        SRCLK::clearPort();
     }
     // clear SER
     SER::clearPort();
