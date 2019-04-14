@@ -14,6 +14,9 @@
 #include "shiftregister74hc595.hpp"
 #include "shiftregister74hc595tester.hpp"
 
+//#include "parallelinshiftregister74hc165.hpp"
+//#include "parallelinshiftregister74hc165tester.hpp"
+
 int main()
 {
     typedef ArduinoUno arduinoUno;
@@ -90,4 +93,31 @@ int main()
         shiftRegisterTester::TestResult testResult = shiftRegisterTester::test();
         shiftRegisterTester::showTestResult(testResult);
     }
+
+
+//    typedef ParallelInShiftRegister74HC165<8, deviceTester::DevicePin13, deviceTester::DevicePin10, deviceTester::DevicePin11, deviceTester::DevicePin12, deviceTester::DevicePin9> shiftRegister;
+//    typedef ParallelInShiftRegisterTester74HC165<arduinoUno::A4,
+//                                arduinoUno::A5,
+//                                arduinoUno::D2,
+//                                arduinoUno::D3,
+//                                arduinoUno::D4,
+//                                arduinoUno::D5,
+//                                arduinoUno::D6,
+//                                arduinoUno::D7,
+//                                arduinoUno::D8,
+//                                arduinoUno::D9,
+//                                arduinoUno::D10,
+//                                arduinoUno::A2,
+//                                arduinoUno::A3,
+//                                shiftRegister> shiftRegisterTester;
+//    shiftRegisterTester::initialize();
+//    shiftRegister::initialize();
+
+//    while (true)
+//    {
+//        shiftRegisterTester::waitForButtonPressAndRelease();
+//        shiftRegisterTester::TestResult testResult = shiftRegisterTester::test();
+//        shiftRegisterTester::showTestResult(testResult);
+//    }
+
 }
