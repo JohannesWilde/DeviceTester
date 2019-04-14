@@ -102,4 +102,4 @@ struct AvrInternalRegister
     }
 };
 
-#endif // AVRINTERNALREGISTER_H
+#endif // AVRINTERNALREGISTER_HPP
