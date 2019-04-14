@@ -39,18 +39,18 @@ template<typename PortRegister, typename DdrRegister, typename PinRegister>
 struct AvrIoRegister
 {
 private:
-    // all three registers should have the same Type, thus choose one.
-    is_same<typename PortRegister::Type, typename PinRegister::Type> sameTypesPortPin;
-    is_same<typename PortRegister::Type, typename DdrRegister::Type> sameTypesPortDdr;
+    // all three registers should have the same RegisterType, thus choose one.
+    is_same<typename PortRegister::RegisterType, typename PinRegister::RegisterType> sameTypesPortPin;
+    is_same<typename PortRegister::RegisterType, typename DdrRegister::RegisterType> sameTypesPortDdr;
 
 public:
-    typedef typename DdrRegister::Type Type;
+    typedef typename DdrRegister::RegisterType RegisterType;
     typedef PortRegister Port;
     typedef DdrRegister Ddr;
     typedef PinRegister Pin;
 
     // setType(PinType const pinType, uint8_t const bitMask) only set those bits, that are 0b1 in bitMask
-    static void setType(AvrInputOutput::PinType const pinType, Type const bitMask)
+    static void setType(AvrInputOutput::PinType const pinType, RegisterType const bitMask)
     {
         switch (pinType)
         {
@@ -73,7 +73,7 @@ public:
         }
     }
 
-    static void togglePort(Type const bitMask)
+    static void togglePort(RegisterType const bitMask)
     {
         // Newer AVRs can toggle a PORT pin by writing a 1 [HIGH] to the respective PIN pin.
         // For very old AVRs thus below method will have to be changed...
@@ -81,27 +81,27 @@ public:
         PinRegister::setBitMask(bitMask);
     }
 
-    static void setPort(Type const bitMask)
+    static void setPort(RegisterType const bitMask)
     {
         PortRegister::setBitMask(bitMask);
     }
 
-    static void clearPort(Type const bitMask)
+    static void clearPort(RegisterType const bitMask)
     {
         PortRegister::clearBitMask(bitMask);
     }
 
-    static typename PortRegister::Type readPort()
+    static typename PortRegister::RegisterType readPort()
     {
         return PortRegister::readRegister();
     }
 
-    static typename DdrRegister::Type readDdr()
+    static typename DdrRegister::RegisterType readDdr()
     {
         return DdrRegister::readRegister();
     }
 
-    static typename PinRegister::Type readPin()
+    static typename PinRegister::RegisterType readPin()
     {
         return PinRegister::readRegister();
     }

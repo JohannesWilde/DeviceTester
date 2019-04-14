@@ -50,7 +50,7 @@ struct AvrPin
 protected:
     // this checks, whether the pin is set in the registerValue or not -
     // if it is, this method returns HIGH, otherwise LOW.
-    static typename AvrInputOutput::PinState checkPinState_(typename AvrIoRegister::Type const registerValue)
+    static typename AvrInputOutput::PinState checkPinState_(typename AvrIoRegister::RegisterType const registerValue)
     {
         return ((registerValue & bitMask) != 0) ? AvrInputOutput::HIGH : AvrInputOutput::LOW;
     }
