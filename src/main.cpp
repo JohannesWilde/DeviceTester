@@ -8,15 +8,6 @@
 #include "arduinouno.hpp"
 #include "devicetester.hpp"
 
-//#include "rslatchcd4043b.hpp"
-//#include "rslatchcd4043btester.hpp"
-
-#include "shiftregister74hc595.hpp"
-#include "shiftregister74hc595tester.hpp"
-
-//#include "parallelinshiftregister74hc165.hpp"
-//#include "parallelinshiftregister74hc165tester.hpp"
-
 int main()
 {
     typedef ArduinoUno arduinoUno;
@@ -39,90 +30,50 @@ int main()
                         arduinoUno::A2,
                         arduinoUno::A3> deviceTester;
 
-//    typedef RsLatchCd4043B<deviceTester::DevicePin3,
-//                           deviceTester::DevicePin2,
-//                           deviceTester::DevicePin5,
-//                           deviceTester::DevicePin6,
-//                           deviceTester::DevicePin11,
-//                           deviceTester::DevicePin10,
-//                           deviceTester::DevicePin13,
-//                           deviceTester::DevicePin14,
-//                           deviceTester::DevicePin4> rsLatchCd4043B;
-//    typedef RsLatchCd4043BTester<deviceTester::ButtonPin,
-//                                  deviceTester::LedPin,
-//                                  deviceTester::DevicePin7,
-//                                  deviceTester::DevicePin15,
-//                                  deviceTester::DevicePin1,
-//                                  deviceTester::DevicePin8,
-//                                  deviceTester::DevicePin9,
-//                                  deviceTester::DevicePin0,
-//                                  deviceTester::DevicePin12,
-//                                  rsLatchCd4043B> rsLatchCd4043BTester;
-//    rsLatchCd4043BTester::initialize();
-//    rsLatchCd4043B::initialize();
+    deviceTester::enableLeds();
 
-//    while (true)
-//    {
-//        rsLatchCd4043BTester::waitForButtonPressAndRelease();
-//        rsLatchCd4043BTester::TestResult testResult = rsLatchCd4043BTester::test();
-//        rsLatchCd4043BTester::showTestResult(testResult);
-//    }
+    typedef typename deviceTester::DevicePin7 GND;
+    typedef typename deviceTester::DevicePin9 nSRCLR;
+    typedef typename deviceTester::DevicePin10 SRCLK;
+    typedef typename deviceTester::DevicePin11 RCLK;
+    typedef typename deviceTester::DevicePin12 nOE;
+    typedef typename deviceTester::DevicePin13 SER;
+    typedef typename deviceTester::DevicePin15 VCC;
 
+    // supply voltage
+    GND::setType(AvrInputOutput::OUTPUT_LOW);
+    VCC::setType(AvrInputOutput::OUTPUT_HIGH);
 
-    typedef ShiftRegister74HC595<8,
-            deviceTester::DevicePin13,
-            deviceTester::DevicePin10,
-            deviceTester::DevicePin11,
-            deviceTester::DevicePin12,
-            deviceTester::DevicePin9,
-            deviceTester::DevicePin8> shiftRegister;
-    typedef ShiftRegister74HC595Tester<deviceTester::ButtonPin,
-                                       deviceTester::LedPin,
-                                       deviceTester::DevicePin0,
-                                       deviceTester::DevicePin1,
-                                       deviceTester::DevicePin2,
-                                       deviceTester::DevicePin3,
-                                       deviceTester::DevicePin4,
-                                       deviceTester::DevicePin5,
-                                       deviceTester::DevicePin6,
-                                       deviceTester::DevicePin7,
-                                       deviceTester::DevicePin14,
-                                       deviceTester::DevicePin15,
-                                       shiftRegister> shiftRegisterTester;
-    shiftRegisterTester::initialize();
-    shiftRegister::initialize();
+    // pin setup
+    nOE::setType(AvrInputOutput::OUTPUT_LOW); // enable  output
+    RCLK::setType(AvrInputOutput::OUTPUT_HIGH);
+    SRCLK::setType(AvrInputOutput::OUTPUT_HIGH);
+    nSRCLR::setType(AvrInputOutput::OUTPUT_HIGH); // do not clear
 
-    while (true)
+    // shift in 0xff
+    SER::setType(AvrInputOutput::OUTPUT_HIGH);
+    for (uint8_t pinNumber = 0; pinNumber < 8; ++pinNumber)
     {
-        shiftRegisterTester::waitForButtonPressAndRelease();
-        shiftRegisterTester::TestResult testResult = shiftRegisterTester::test();
-        shiftRegisterTester::showTestResult(testResult);
+        SRCLK::clearPort();
+        SRCLK::setPort();
     }
+    // clear SER
+    SER::clearPort();
+    // show shift-in value
+    RCLK::clearPort();
+    RCLK::setPort();
 
+    // ---------------
+    // now clear the shift register
+    nSRCLR::clearPort();
+    // show cleared
+    RCLK::clearPort();
+    RCLK::setPort();
 
-//    typedef ParallelInShiftRegister74HC165<8, deviceTester::DevicePin13, deviceTester::DevicePin10, deviceTester::DevicePin11, deviceTester::DevicePin12, deviceTester::DevicePin9> shiftRegister;
-//    typedef ParallelInShiftRegisterTester74HC165<arduinoUno::A4,
-//                                arduinoUno::A5,
-//                                arduinoUno::D2,
-//                                arduinoUno::D3,
-//                                arduinoUno::D4,
-//                                arduinoUno::D5,
-//                                arduinoUno::D6,
-//                                arduinoUno::D7,
-//                                arduinoUno::D8,
-//                                arduinoUno::D9,
-//                                arduinoUno::D10,
-//                                arduinoUno::A2,
-//                                arduinoUno::A3,
-//                                shiftRegister> shiftRegisterTester;
-//    shiftRegisterTester::initialize();
-//    shiftRegister::initialize();
-
-//    while (true)
-//    {
-//        shiftRegisterTester::waitForButtonPressAndRelease();
-//        shiftRegisterTester::TestResult testResult = shiftRegisterTester::test();
-//        shiftRegisterTester::showTestResult(testResult);
-//    }
+    // should be cleared now, so take away the clear-signal
+    nSRCLR::setPort();
+    // show cleared
+    RCLK::clearPort();
+    RCLK::setPort();
 
 }
