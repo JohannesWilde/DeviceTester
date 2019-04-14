@@ -190,17 +190,19 @@ public:
     // INPUT_PULLUP to INPUT in the correct order, i.e. VCC typically last.
     static void turnOffDevice()
     {
-       enableLeds();    // leds enabled to see erroneous behaviour
-       enableButton();  // button enabled
+        enableButton();  // button enabled
+        enableLeds();    // leds enabled to see erroneous behaviour
     }
+
+    // Please note: Typicall the order of what is turned off should be reversed when turning it back on again.
 
     // Every device tester should implement a turnOnDevice() method.
     // This is supposed to set all OUTPUT_HIGH and INPUT_PULLUP
     // in the correct order, i.e. VCC typically first.
     static void turnOnDevice()
     {
-       disableLeds();   // leds disabled by default
-       enableButton();  // button enabled
+        disableLeds();   // leds disabled by default
+        enableButton();  // button enabled
     }
 };
 
