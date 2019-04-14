@@ -30,32 +30,32 @@
 // use direct I/O access where possible.
 
 
-// Convert a intptr_t to an appropriately typed pointer of RegisterType volatile *.
-template<intptr_t registerAddress, typename RegisterType>
+// Convert a uintptr_t to an appropriately typed pointer of RegisterType volatile *.
+template<uintptr_t registerAddress, typename RegisterType>
 RegisterType volatile * const registerPointer()
 {
     return reinterpret_cast<RegisterType volatile * const>(registerAddress);
 }
 
 // Convert "data access"ible to I/O register address
-template<intptr_t registerAddress>
+template<uintptr_t registerAddress>
 struct SfrIoFromMemoryAddress
 {
-    static intptr_t const address = registerAddress - __SFR_OFFSET;
+    static uintptr_t const address = registerAddress - __SFR_OFFSET;
 };
 
 // Convert I/O register address to "data access"ible address
 // This is quite useful when converting the register addresses as stated in the Atmel
 // reference documents or their respective device headers to avr-gcc or avr-g++
 // usable "data access" register addresses.
-template<intptr_t registerAddress>
+template<uintptr_t registerAddress>
 struct SfrMemoryFromIoAddress
 {
-    static intptr_t const address = registerAddress + __SFR_OFFSET;
+    static uintptr_t const address = registerAddress + __SFR_OFFSET;
 };
 
 // checks whether a "data access" register address is in fact an I/O register address
-template<intptr_t registerAddress>
+template<uintptr_t registerAddress>
 struct IsSfrIoRegister
 {
     static bool const value = ((__SFR_OFFSET <= registerAddress) && (registerAddress < (0x40 + __SFR_OFFSET)));
@@ -76,7 +76,7 @@ struct isValidRegisterAddress
 
 
 
-template<intptr_t registerAddress, typename RegisterType>
+template<uintptr_t registerAddress, typename RegisterType>
 struct AvrInternalRegister
 {
     // make RegisterType accessible via "typename AvrInternalRegister<address, type>::Type"
