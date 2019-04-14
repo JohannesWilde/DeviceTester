@@ -191,6 +191,8 @@ public:
                 curBitMask = 0x01 << 7; // reset bitmask to most significant bit
             }
         }
+        // finally set serialInput to low
+        SerialInput_::clearPort();
     }
 
     // Same as above, however it writes it output over its input and thus does not
@@ -233,6 +235,8 @@ public:
                 curBitMask = 0x01 << 7; // reset bitmask to most significant bit
             }
         }
+        // finally set serialInput to low
+        SerialInput_::clearPort();
     }
 };
 
