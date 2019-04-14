@@ -61,19 +61,6 @@ struct IsSfrIoRegister
     static bool const value = ((__SFR_OFFSET <= registerAddress) && (registerAddress < (0x40 + __SFR_OFFSET)));
 };
 
-// A registerAddress smaller than 0 [registerAddress < 0]  will lead to this
-// AvrInternalRegister as having no effect at all.
-// This is so as to provide "dummy" registers without any functionality.
-// Alternatively one still can choose a certain address in SRAM, provide that address [which
-// probably will be valid] - however will have to tell the linker to put a variable at that
-// position. These would then also retain their information and could be changed externally -
-// exactly like an internal register.
-template<intptr_t registerAddress>
-struct isValidRegisterAddress
-{
-    static bool const value = ( 0 <= registerAddress );
-};
-
 
 
 template<uintptr_t registerAddress, typename RegisterType>
@@ -85,19 +72,13 @@ struct AvrInternalRegister
     // Set all register bits, which are 1 in bitMask, 1 [HIGH].
     static void setBitMask(RegisterType const bitMask)
     {
-        if (isValidRegisterAddress<registerAddress>::value)
-        {
-            *registerPointer<registerAddress, RegisterType>() |= bitMask;
-        }
+        *registerPointer<registerAddress, RegisterType>() |= bitMask;
     }
 
     // Set all register bits, which are 1 in bitMask, 0 [LOW].
     static void clearBitMask(RegisterType const bitMask)
     {
-        if (isValidRegisterAddress<registerAddress>::value)
-        {
-            *registerPointer<registerAddress, RegisterType>() &= ~bitMask;
-        }
+        *registerPointer<registerAddress, RegisterType>() &= ~bitMask;
     }
 
     // Toggle all bits, which are 1 in bitMask. I.e. for each bit in:
@@ -108,10 +89,7 @@ struct AvrInternalRegister
     // 1        | 1         | 0         - toggled
     static void toggleBitMask(RegisterType const bitMask)
     {
-        if (isValidRegisterAddress<registerAddress>::value)
-        {
-            *registerPointer<registerAddress, RegisterType>() ^= bitMask;
-        }
+        *registerPointer<registerAddress, RegisterType>() ^= bitMask;
     }
 
     // Return the value currently in the register.
@@ -120,16 +98,7 @@ struct AvrInternalRegister
     // pointed to by registerAddress and the next 1, 2 or 3 bytes respectively.
     static RegisterType readRegister()
     {
-        RegisterType returnValue;
-        if (isValidRegisterAddress<registerAddress>::value)
-        {
-            returnValue = *registerPointer<registerAddress, RegisterType>();
-        }
-        else
-        {
-            returnValue = 0;
-        }
-        return returnValue;
+        return *registerPointer<registerAddress, RegisterType>();
     }
 };
 
