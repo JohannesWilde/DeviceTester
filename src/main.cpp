@@ -59,9 +59,14 @@ int main()
     }
     // clear SER
     SER::clearPort();
+
+    // <- here Q_H' is cleared, as expected
+
     // show shift-in value
     RCLK::clearPort();
     RCLK::setPort();
+
+    // <- here the Q_x are cleared, as expected
 
     // ---------------
     // now clear the shift register
@@ -72,8 +77,13 @@ int main()
 
     // should be cleared now, so take away the clear-signal
     nSRCLR::setPort();
+
+    // <- here however Q_H' stays LOW
+
     // show cleared
     RCLK::clearPort();
     RCLK::setPort();
+
+    // <- and here all Q_x are LOW as well
 
 }
