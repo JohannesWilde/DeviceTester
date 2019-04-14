@@ -69,7 +69,13 @@ int main()
 //    }
 
 
-    typedef ShiftRegister74HC595<8, deviceTester::DevicePin13, deviceTester::DevicePin10, deviceTester::DevicePin11, deviceTester::DevicePin12, deviceTester::DevicePin9> shiftRegister;
+    typedef ShiftRegister74HC595<8,
+            deviceTester::DevicePin13,
+            deviceTester::DevicePin10,
+            deviceTester::DevicePin11,
+            deviceTester::DevicePin12,
+            deviceTester::DevicePin9,
+            deviceTester::DevicePin8> shiftRegister;
     typedef ShiftRegister74HC595Tester<arduinoUno::A4,
                                 arduinoUno::A5,
                                 arduinoUno::D2,
@@ -80,7 +86,6 @@ int main()
                                 arduinoUno::D7,
                                 arduinoUno::D8,
                                 arduinoUno::D9,
-                                arduinoUno::D10,
                                 arduinoUno::A2,
                                 arduinoUno::A3,
                                 shiftRegister> shiftRegisterTester;

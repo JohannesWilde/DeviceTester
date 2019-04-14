@@ -103,7 +103,7 @@ public:
         ShiftRegister_::template shiftInBits<ShiftRegister_::LENGTH>(bitStreamArray);
     }
 
-    static void shiftOutBits(uint8_t const * const bitStreamArray)
+    static void shiftOutBits(uint8_t * const bitStreamArray)
     {
         ShiftRegister_::template shiftOutBits<ShiftRegister_::LENGTH>(bitStreamArray);
     }

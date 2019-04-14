@@ -15,7 +15,6 @@ template< typename Button_,
           typename ParallelOutput6_,
           typename ParallelOutput7_,
           typename Gnd_,
-          typename SerialOutput_,
           typename ParallelOutput0_,
           typename Vcc_,
           typename ShiftRegisterDriver_>
@@ -29,7 +28,7 @@ struct ShiftRegister74HC595Tester : public DeviceTester<Button_,
                                                  ParallelOutput6_,
                                                  ParallelOutput7_,
                                                  Gnd_,
-                                                 SerialOutput_,
+                                                 typename ShiftRegisterDriver_::SerialOutput,
                                                  typename ShiftRegisterDriver_::InvertedShiftRegisterClear,
                                                  typename ShiftRegisterDriver_::ShiftRegisterClock,
                                                  typename ShiftRegisterDriver_::ShowRegisterClock,
@@ -49,7 +48,7 @@ protected:
                         ParallelOutput6_,
                         ParallelOutput7_,
                         Gnd_,
-                        SerialOutput_,
+                        typename ShiftRegisterDriver_::SerialOutput,
                         typename ShiftRegisterDriver_::InvertedShiftRegisterClear,
                         typename ShiftRegisterDriver_::ShiftRegisterClock,
                         typename ShiftRegisterDriver_::ShowRegisterClock,
@@ -67,8 +66,8 @@ public:
     typedef ParallelOutput6_ ParallelOutput6Pin;
     typedef ParallelOutput7_ ParallelOutput7Pin;
     typedef Gnd_ GndPin;
-    typedef SerialOutput_ SerialOutputPin;
     typedef ShiftRegisterDriver_ ShiftRegisterDriver;
+    typedef typename ShiftRegisterDriver_::SerialOutput SerialOutputPin;
     typedef typename ShiftRegisterDriver_::InvertedShiftRegisterClear InvertedShiftRegisterClearPin;
     typedef typename ShiftRegisterDriver_::ShiftRegisterClock ShiftRegisterClockPin;
     typedef typename ShiftRegisterDriver_::ShowRegisterClock ShowRegisterClockPin;
@@ -499,15 +498,17 @@ public:
             data++;
             // MSB shifted in first
             ShiftRegisterDriver_::shiftInBits(&data);
-            // if MSB in data was 1, expect HIGH on SerialOutput
-            AvrInputOutput::PinState const expectedState = ((0x80 & data) != 0) ? AvrInputOutput::HIGH : AvrInputOutput::LOW;
-            bool const readBack0 = checkSerialOutput(expectedState);
-            if (!readBack0)
+
+            uint8_t readBack = 0x00;
+            ShiftRegisterDriver_::shiftOutBits(&readBack);
+
+            bool const readSuccess = (data == readBack);
+            if (!readSuccess)
             {
                 outputOk = false;
             }
         }
-        while (0xff != data && outputOk);
+        while (0xff != data);// && outputOk);
         if (outputOk)
         {
             testSuccess = true;
