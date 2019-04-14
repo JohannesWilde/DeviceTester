@@ -11,8 +11,8 @@
 //#include "shiftregister.hpp"
 //#include "shiftregistertester.hpp"
 
-#include "rslatch.hpp"
-#include "rslatchtester.hpp"
+#include "rslatchcd4043b.hpp"
+#include "rslatchcd4043btester.hpp"
 
 int main()
 {
@@ -36,24 +36,33 @@ int main()
                         arduinoUno::A2,
                         arduinoUno::A3> deviceTester;
 
-    typedef RsLatch<deviceTester::DevicePin3,
-                    deviceTester::DevicePin2,
-                    deviceTester::DevicePin4> rsLatch;
-
-    typedef RsLatchTester<deviceTester::ButtonPin,
-                          deviceTester::LedPin,
-                          deviceTester::DevicePin7,
-                          deviceTester::DevicePin15,
-                          deviceTester::DevicePin1,
-                          rsLatch> rsLatchTester;
-    rsLatchTester::initialize();
-    rsLatch::initialize();
+    typedef RsLatchCd4043B<deviceTester::DevicePin3,
+                           deviceTester::DevicePin2,
+                           deviceTester::DevicePin5,
+                           deviceTester::DevicePin6,
+                           deviceTester::DevicePin11,
+                           deviceTester::DevicePin10,
+                           deviceTester::DevicePin13,
+                           deviceTester::DevicePin14,
+                           deviceTester::DevicePin4> rsLatchCd4043B;
+    typedef RsLatchCd4043BTester<deviceTester::ButtonPin,
+                                  deviceTester::LedPin,
+                                  deviceTester::DevicePin7,
+                                  deviceTester::DevicePin15,
+                                  deviceTester::DevicePin1,
+                                  deviceTester::DevicePin8,
+                                  deviceTester::DevicePin9,
+                                  deviceTester::DevicePin0,
+                                  deviceTester::DevicePin12,
+                                  rsLatchCd4043B> rsLatchCd4043BTester;
+    rsLatchCd4043BTester::initialize();
+    rsLatchCd4043B::initialize();
 
     while (true)
     {
-        rsLatchTester::waitForButtonPressAndRelease();
-        rsLatchTester::TestResult testResult = rsLatchTester::test();
-        rsLatchTester::showTestResult(testResult);
+        rsLatchCd4043BTester::waitForButtonPressAndRelease();
+        rsLatchCd4043BTester::TestResult testResult = rsLatchCd4043BTester::test();
+        rsLatchCd4043BTester::showTestResult(testResult);
     }
 
 
