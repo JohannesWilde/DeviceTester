@@ -204,6 +204,11 @@ public:
         disableLeds();   // leds disabled by default
         enableButton();  // button enabled
     }
+
+    static void showTestResult(TestResult const testResult)
+    {
+        // showing of test result
+    }
 };
 
 #endif // DEVICETESTER_H
