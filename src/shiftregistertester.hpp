@@ -101,12 +101,12 @@ public:
 
     static bool checkOutputEnabled()
     {
-        return DeviceTester_::template checkDevicePinPin<InvertedOutputEnablePin>(AvrInputOutput::LOW);
+        return checkOutputEnable(AvrInputOutput::LOW);
     }
 
     static bool checkInvertedShiftRegisterClearing()
     {
-        return DeviceTester_::template checkDevicePinPin<InvertedShiftRegisterClearPin>(AvrInputOutput::LOW);
+        return checkInvertedShiftRegisterClear(AvrInputOutput::LOW);
     }
 
     static bool checkOutputEnable(AvrInputOutput::PinState const pinState)
