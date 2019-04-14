@@ -315,7 +315,6 @@ public:
 
     static void turnOffDevice()
     {
-        ShiftRegisterDriver_::turnOff();
         ParallelOutput0_::clearPort();
         ParallelOutput1_::clearPort();
         ParallelOutput2_::clearPort();
@@ -324,14 +323,15 @@ public:
         ParallelOutput5_::clearPort();
         ParallelOutput6_::clearPort();
         ParallelOutput7_::clearPort();
+        ShiftRegisterDriver_::turnOff();
         Vcc_::clearPort();
         DeviceTester_::turnOffDevice();
     }
 
     static void turnOnDevice()
     {
-        ShiftRegisterDriver_::turnOn();
         Vcc_::setPort();
+        ShiftRegisterDriver_::turnOn();
         ParallelOutput0_::setPort();
         ParallelOutput1_::setPort();
         ParallelOutput2_::setPort();
