@@ -23,6 +23,8 @@ public:
     typedef InvertedOutputEnable_ InvertedOutputEnable;
     typedef InvertedShiftRegisterClear_ InvertedShiftRegisterClear;
 
+    // This initializes the pin directions [output or input] and turns on the shift register
+    // [see turnOn()].
     static void initialize()
     {
         // set data directions of pins and default port states
@@ -36,6 +38,11 @@ public:
         showShiftRegister();
     }
 
+    // This will, if the register was initialized previously, disable its output [
+    // i.e. the pins will be in a high impedance state, "free floating"], clear the
+    // shift and the show register and set ShiftRegisterClock_, ShowRegisterClock_,
+    // SerialInput_ and InvertedShiftRegisterClear_ to LOW - i.e. all pins managed by
+    // this driver will be LOW [Vcc will be someones else's responsibility...].
     static void turnOff()
     {
         // This assumes ShiftRegister was initialized previously.
@@ -49,7 +56,10 @@ public:
         InvertedOutputEnable_::clearPort();         // this enables the output - which was cleared however.
     }
 
-
+    // This will, if the register was initialized previously, disable its output [
+    // i.e. the pins will be in a high impedance state, "free floating"], clear the
+    // shift and the show register and default ShiftRegisterClock_, ShowRegisterClock_
+    // and SerialInput_ to LOW.
     static void turnOn()
     {
         // This assumes ShiftRegister was initialized previously.
