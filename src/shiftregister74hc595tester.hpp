@@ -493,17 +493,16 @@ public:
 
         uint8_t data = 0x00 - 1;
         bool outputOk = true;
-        ShiftRegisterDriver_::shiftInBits(&data);
         do
         {
             data++;
+            // MSB shifted in first
+            ShiftRegisterDriver_::shiftInBits(&data);
 
-            uint8_t const temp = data;
-            uint8_t temp2 = temp + 1;
-            ShiftRegisterDriver_::shiftInAndOutBitsSimultaneously(&temp, &temp2);
-            ++temp2;
-            bool const readSuccess = (data == temp2);
+            uint8_t readBack = 0x00;
+            ShiftRegisterDriver_::shiftOutBits(&readBack);
 
+            bool const readSuccess = (data == readBack);
             if (!readSuccess)
             {
                 outputOk = false;
