@@ -76,19 +76,19 @@ int main()
             deviceTester::DevicePin12,
             deviceTester::DevicePin9,
             deviceTester::DevicePin8> shiftRegister;
-    typedef ShiftRegister74HC595Tester<arduinoUno::A4,
-                                arduinoUno::A5,
-                                arduinoUno::D2,
-                                arduinoUno::D3,
-                                arduinoUno::D4,
-                                arduinoUno::D5,
-                                arduinoUno::D6,
-                                arduinoUno::D7,
-                                arduinoUno::D8,
-                                arduinoUno::D9,
-                                arduinoUno::A2,
-                                arduinoUno::A3,
-                                shiftRegister> shiftRegisterTester;
+    typedef ShiftRegister74HC595Tester<deviceTester::ButtonPin,
+                                       deviceTester::LedPin,
+                                       deviceTester::DevicePin0,
+                                       deviceTester::DevicePin1,
+                                       deviceTester::DevicePin2,
+                                       deviceTester::DevicePin3,
+                                       deviceTester::DevicePin4,
+                                       deviceTester::DevicePin5,
+                                       deviceTester::DevicePin6,
+                                       deviceTester::DevicePin7,
+                                       deviceTester::DevicePin14,
+                                       deviceTester::DevicePin15,
+                                       shiftRegister> shiftRegisterTester;
     shiftRegisterTester::initialize();
     shiftRegister::initialize();
 
