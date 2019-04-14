@@ -16,5 +16,12 @@ static void highLowClock()
     AvrPin::clearPort();
 }
 
+template<typename AvrPin>
+static void toggleTwice()
+{
+    AvrPin::togglePort();
+    AvrPin::togglePort();
+}
+
 
 #endif // AVRPINHELPER_HPP
