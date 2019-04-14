@@ -498,10 +498,11 @@ public:
         {
             data++;
 
-            uint8_t temp = data;
-            ShiftRegisterDriver_::shiftInAndOutBitsSimultaneously(&temp);
-            ++temp;
-            bool const readSuccess = (data == temp);
+            uint8_t const temp = data;
+            uint8_t temp2 = temp + 1;
+            ShiftRegisterDriver_::shiftInAndOutBitsSimultaneously(&temp, &temp2);
+            ++temp2;
+            bool const readSuccess = (data == temp2);
 
             if (!readSuccess)
             {
