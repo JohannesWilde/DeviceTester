@@ -213,10 +213,7 @@ public:
     {
         // test result
         TestResult testResult;
-
-        // initialize
-        initialize();
-        ShiftRegisterDriver_::initialize();
+        turnOnDevice();
 
         testResult.disableOutput = testDisableOutput();
 

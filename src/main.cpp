@@ -67,6 +67,8 @@ int main()
                                 arduinoUno::A2,
                                 arduinoUno::A3,
                                 shiftRegister> shiftRegisterTester;
+    shiftRegisterTester::initialize();
+    shiftRegister::initialize();
 
     while (true)
     {
