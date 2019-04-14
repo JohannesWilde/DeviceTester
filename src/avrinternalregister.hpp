@@ -67,6 +67,7 @@ template<uintptr_t registerAddress_, typename RegisterType_>
 struct AvrInternalRegister
 {
     // make RegisterType_ accessible via "typename AvrInternalRegister<address, type>::RegisterType"
+    static const uintptr_t registerAddress = registerAddress_;
     typedef RegisterType_ RegisterType;
 
     // Set all register bits, which are 1 in bitMask, 1 [HIGH].
