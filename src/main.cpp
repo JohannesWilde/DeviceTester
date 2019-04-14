@@ -6,6 +6,7 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "arduinouno.hpp"
+#include "devicetester.hpp"
 
 //#include "shiftregister.hpp"
 //#include "shiftregistertester.hpp"
