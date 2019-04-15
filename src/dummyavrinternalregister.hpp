@@ -16,7 +16,7 @@
 // to the same class and thus the same dummyRegister.
 // dummyAvrInternalRegister2 however will refer to another class.
 
-template<uintptr_t registerAddress_, typename RegisterType_, bool functional_ = true>
+template<uintptr_t registerAddress_, typename RegisterType_, bool functional_ = true, RegisterType_ nonFunctionalDefaultValue = 0>
 struct DummyAvrInternalRegister
 {
     // make RegisterType accessible via "typename DummyAvrInternalRegister<address, type>::RegisterType"
@@ -69,7 +69,7 @@ struct DummyAvrInternalRegister
         }
         else
         {
-            returnVal = 0;
+            returnVal = nonFunctionalDefaultValue;
         }
         return returnVal;
     }
@@ -77,7 +77,7 @@ struct DummyAvrInternalRegister
 
 
 // initialize dummyRegister_ of every class to 0
-template<uintptr_t registerAddress_, typename RegisterType_, bool functional_>
-RegisterType_ DummyAvrInternalRegister<registerAddress_, RegisterType_, functional_>::dummyRegister = 0;
+template<uintptr_t registerAddress_, typename RegisterType_, bool functional_, RegisterType_ nonFunctionalDefaultValue>
+RegisterType_ DummyAvrInternalRegister<registerAddress_, RegisterType_, functional_, nonFunctionalDefaultValue>::dummyRegister = 0;
 
 #endif // DUMMYAVRINTERNALREGISTER_HPP
