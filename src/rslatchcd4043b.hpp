@@ -18,13 +18,13 @@ struct RsLatchCd4043B
 {
 protected:
     // these RsLatches only have a dummy OutputEnablePin - as otherwise RsLatch0 could affect RsLatch1 here.
-    typedef RsLatch<Set0Pin_, Reset0Pin_, DummyAvrPin0> RsLatch0_;
-    typedef RsLatch<Set1Pin_, Reset1Pin_, DummyAvrPin0> RsLatch1_;
-    typedef RsLatch<Set2Pin_, Reset2Pin_, DummyAvrPin0> RsLatch2_;
-    typedef RsLatch<Set3Pin_, Reset3Pin_, DummyAvrPin0> RsLatch3_;
+    typedef RsLatch<Set0Pin_, Reset0Pin_, DummyAvrPin1> RsLatch0_;
+    typedef RsLatch<Set1Pin_, Reset1Pin_, DummyAvrPin1> RsLatch1_;
+    typedef RsLatch<Set2Pin_, Reset2Pin_, DummyAvrPin1> RsLatch2_;
+    typedef RsLatch<Set3Pin_, Reset3Pin_, DummyAvrPin1> RsLatch3_;
 
     // for the global outputEnable also use the RsLatch functionality.
-    typedef RsLatch<DummyAvrPin0, DummyAvrPin0, OutputEnablePin_> RsLatchOutputEnable_;
+    typedef RsLatch<DummyAvrPin1, DummyAvrPin1, OutputEnablePin_> RsLatchOutputEnable_;
 
 public:
     typedef Set0Pin_ Set0Pin;

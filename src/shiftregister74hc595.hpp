@@ -10,7 +10,7 @@
 
 template<unsigned const length_, typename SerialInput_, typename ShiftRegisterClock_,
          typename ShowRegisterClock_, typename InvertedOutputEnable_, typename InvertedShiftRegisterClear_,
-         typename SerialOutput_ = DummyAvrPin0>
+         typename SerialOutput_ = DummyAvrPin1>
 // length - number of pins
 // the rest - AvrPin types
 struct ShiftRegister74HC595 : public ShiftRegister<length_, SerialInput_, ShiftRegisterClock_, SerialOutput_>

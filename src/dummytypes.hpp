@@ -7,19 +7,19 @@
 
 // all the following types are non-fucntional, i.e. should produce no code.
 
-typedef DummyAvrInternalRegister<static_cast<uintptr_t>(-1), uint8_t, false> DummyAvrInternalRegister1;
-typedef DummyAvrInternalRegister<static_cast<uintptr_t>(-2), uint8_t, false> DummyAvrInternalRegister2;
-typedef DummyAvrInternalRegister<static_cast<uintptr_t>(-3), uint8_t, false> DummyAvrInternalRegister3;
+// this register will always return 0x00
+typedef DummyAvrInternalRegister<static_cast<uintptr_t>(-1), uint8_t, false, 0x00> DummyAvrInternalRegister1;
+// this register will always return 0xff
+typedef DummyAvrInternalRegister<static_cast<uintptr_t>(-2), uint8_t, false, 0xff> DummyAvrInternalRegister2;
 
-typedef AvrIoRegister<DummyAvrInternalRegister1, DummyAvrInternalRegister2, DummyAvrInternalRegister3> DummyAvrIoRegister;
+// this I/O register will always return 0x00 [Pin], INPUT
+typedef AvrIoRegister<DummyAvrInternalRegister1, DummyAvrInternalRegister1, DummyAvrInternalRegister1> DummyAvrIoRegister1;
+// this I/O register will always return 0xff [Pin], OUTPUT_HIGH
+typedef AvrIoRegister<DummyAvrInternalRegister2, DummyAvrInternalRegister2, DummyAvrInternalRegister2> DummyAvrIoRegister2;
 
-typedef AvrPin<DummyAvrIoRegister, 0> DummyAvrPin0;
-typedef AvrPin<DummyAvrIoRegister, 1> DummyAvrPin1;
-typedef AvrPin<DummyAvrIoRegister, 2> DummyAvrPin2;
-typedef AvrPin<DummyAvrIoRegister, 3> DummyAvrPin3;
-typedef AvrPin<DummyAvrIoRegister, 4> DummyAvrPin4;
-typedef AvrPin<DummyAvrIoRegister, 5> DummyAvrPin5;
-typedef AvrPin<DummyAvrIoRegister, 6> DummyAvrPin6;
-typedef AvrPin<DummyAvrIoRegister, 7> DummyAvrPin7;
+// this pin will always read LOW [0]
+typedef AvrPin<DummyAvrIoRegister1, 0> DummyAvrPin1;
+// this pin will always read HIGH [1]
+typedef AvrPin<DummyAvrIoRegister2, 0> DummyAvrPin2;
 
 #endif // DUMMYTYPES_HPP

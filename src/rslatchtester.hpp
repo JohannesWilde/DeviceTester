@@ -20,16 +20,16 @@ struct RsLatchTester : public DeviceTester<Button_,
                                          typename RsLatchDriver_::SetPin,
                                          typename RsLatchDriver_::ResetPin,
                                          typename RsLatchDriver_::OutputEnablePin,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0,
-                                         DummyAvrPin0>
+                                         DummyAvrPin1,
+                                         DummyAvrPin1,
+                                         DummyAvrPin1,
+                                         DummyAvrPin1,
+                                         DummyAvrPin1,
+                                         DummyAvrPin1,
+                                         DummyAvrPin1,
+                                         DummyAvrPin1,
+                                         DummyAvrPin1,
+                                         DummyAvrPin1>
 {
 protected:
     typedef DeviceTester<Button_,
@@ -40,16 +40,16 @@ protected:
                          typename RsLatchDriver_::SetPin,
                          typename RsLatchDriver_::ResetPin,
                          typename RsLatchDriver_::OutputEnablePin,
-                         DummyAvrPin0,
-                         DummyAvrPin0,
-                         DummyAvrPin0,
-                         DummyAvrPin0,
-                         DummyAvrPin0,
-                         DummyAvrPin0,
-                         DummyAvrPin0,
-                         DummyAvrPin0,
-                         DummyAvrPin0,
-                         DummyAvrPin0> DeviceTester_;
+                         DummyAvrPin1,
+                         DummyAvrPin1,
+                         DummyAvrPin1,
+                         DummyAvrPin1,
+                         DummyAvrPin1,
+                         DummyAvrPin1,
+                         DummyAvrPin1,
+                         DummyAvrPin1,
+                         DummyAvrPin1,
+                         DummyAvrPin1> DeviceTester_;
 public:
     // make the pins publically available
     typedef Gnd_ GndPin;
