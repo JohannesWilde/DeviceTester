@@ -47,7 +47,7 @@ int main()
     // pin setup
     nOE::setType(AvrInputOutput::OUTPUT_LOW); // enable  output
     RCLK::setType(AvrInputOutput::OUTPUT_LOW);
-    SRCLK::setType(AvrInputOutput::OUTPUT_HIGH);
+    SRCLK::setType(AvrInputOutput::OUTPUT_LOW);
     nSRCLR::setType(AvrInputOutput::OUTPUT_HIGH); // do not clear
 
     // shift in 0xff
