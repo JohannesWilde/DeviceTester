@@ -179,9 +179,9 @@ public:
             disableClock(false),
             enableParallelLoad(false),
             disableParallelLoad(false),
-            loadParallelToShiftregister(false),
             parallelLoadEnabled(false),
             clockEnabled(false),
+            loadParallelToShiftregister(false),
             clearShiftRegister(false),
             shiftInBits(false),
             shiftOutBits(false)
@@ -195,9 +195,9 @@ public:
         bool disableClock : 1;
         bool enableParallelLoad : 1;
         bool disableParallelLoad : 1;
-        bool loadParallelToShiftregister : 1;
         bool parallelLoadEnabled : 1;
         bool clockEnabled : 1;
+        bool loadParallelToShiftregister : 1;
         bool clearShiftRegister : 1;
         bool shiftInBits : 1;
         bool shiftOutBits : 1;
@@ -218,17 +218,14 @@ public:
         testResult.enableParallelLoad = testEnableParallelLoad();
         testResult.disableParallelLoad = testDisableParallelLoad();
 
-//        testResult.disableOutput = testDisableOutput();
+        testResult.parallelLoadEnabled = testParallelLoadEnabled();
+        testResult.clockEnabled = testClockEnabled();
 
-//        testResult.enableOutput = testEnableOutput();
+        testResult.loadParallelToShiftregister = testLoadParallelToShiftregister();
+        testResult.clearShiftRegister = testClearShiftRegister();
 
-//        testResult.serialOutput = testSerialOutput();
-
-//        testResult.showShiftRegister = testShowShiftRegister();
-
-//        testResult.clearShiftRegister = testShiftRegisterClear();
-
-
+        testResult.shiftInBits = testShiftInBits();
+        testResult.shiftOutBits = testShiftOutBits();
 
         // set test success
         if (testResult.turnOff &&
@@ -357,6 +354,7 @@ public:
             testSuccess = true;
         }
 
+        writeParallelInput(0x00);
         ParallelInShiftRegisterDriver_::turnOn();
         return testSuccess;
     }
@@ -429,175 +427,169 @@ public:
         return testSuccess;
     }
 
-//    static uint8_t testParallelOutput()
-//    {
-//    DeviceTester_::enableLeds();
-//    DeviceTester_::waitForButtonPressAndRelease();
-//        ShiftRegisterDriver_::enableOutput();
+    static bool testParallelLoadEnabled()
+    {
+        bool testSuccess = false;
+        InvertedParallelLoad::clearPort();
+        // function under test
+        bool const enabled = ParallelInShiftRegisterDriver_::parallelLoadEnabled();
 
-//        uint8_t data = 0x00 - 1; // expect underflow here! This will be reverted in the do-while-lopp below.
-//        uint8_t failedPins = 0x00;
-//        do
-//        {
-//            data++;
-//            ShiftRegisterDriver_::shiftInBits(&data);
-//            ShiftRegisterDriver_::showShiftRegister();
-//            uint8_t const readBack0 = readParallelOutput();
-//            uint8_t const unexpectedPins = readBack0 ^ data;
-//            failedPins |= unexpectedPins; // "sum up" failed pin outputs
-//        }
-//        while (0xff != data);
+        InvertedParallelLoad::setPort();
+        bool const disabled = !ParallelInShiftRegisterDriver_::parallelLoadEnabled();
 
-//        ShiftRegisterDriver_::clearShiftRegister();
-//        ShiftRegisterDriver_::showShiftRegister();
-//        ShiftRegisterDriver_::disableOutput();
-//        return failedPins;
-//    }
+        if (enabled && disabled)
+        {
+            testSuccess = true;
+        }
 
-//    static bool testShiftRegisterClear()
-//    {
-//        bool testSuccess = false;
-//        ShiftRegisterDriver_::enableOutput();
+        ParallelInShiftRegisterDriver_::turnOn();
+        return testSuccess;
+    }
 
-//        // first show something to clear
-//        uint8_t const data = 0xff;
-//        ShiftRegisterDriver_::shiftInBits(&data);
-//        ShiftRegisterDriver_::showShiftRegister();
-//        uint8_t const readBack0 = readParallelOutput();
-//        bool const readBack1 = checkSerialOutput(AvrInputOutput::HIGH);
+    static bool testClockEnabled()
+    {
+        bool testSuccess = false;
+        InvertedClockEnable::clearPort();
+        // function under test
+        bool const enabled = ParallelInShiftRegisterDriver_::clockEnabled();
 
-//        ShiftRegisterDriver_::clearShiftRegister();
-//        // serial output should show the clear of the shift register
-//        uint8_t const readBack2 = readParallelOutput();
-//        // check that show register unaffected from shift register clear
-//        bool const readBack3 = checkSerialOutput(AvrInputOutput::LOW);
+        InvertedClockEnable::setPort();
+        bool const disabled = !ParallelInShiftRegisterDriver_::clockEnabled();
 
-//        // check shift register clear
-//        ShiftRegisterDriver_::showShiftRegister();
-//        uint8_t const readBack4 = readParallelOutput();
-//        if ( readBack0 != 0x00 && readBack1 && readBack0 == readBack2 && readBack3 && 0x00 == readBack4)
-//        {
-//            testSuccess = true;
-//        }
+        if (enabled && disabled)
+        {
+            testSuccess = true;
+        }
 
-//        ShiftRegisterDriver_::clearShiftRegister();
-//        ShiftRegisterDriver_::showShiftRegister();
-//        ShiftRegisterDriver_::disableOutput();
-//        return testSuccess;
-//    }
+        ParallelInShiftRegisterDriver_::turnOn();
+        return testSuccess;
+    }
 
-//    static bool testShowShiftRegister()
-//    {
-//        bool testSuccess = false;
-//        ShiftRegisterDriver_::enableOutput();
+    static bool testLoadParallelToShiftregister()
+    {
+        DeviceTester_::enableLeds();
 
-//        uint8_t data = 0xff;
-//        ShiftRegisterDriver_::shiftInBits(&data);
-//        ShiftRegisterDriver_::showShiftRegister();
-//        uint8_t const readBack0 = readParallelOutput();
+        bool testSuccess = false;
+        uint8_t const data = 0x55;
+        writeParallelInput(data);
+        uint8_t const writtenData = readParallelInput();
 
-//        data = 0xaa;
-//        ShiftRegisterDriver_::shiftInBits(&data);
-//        uint8_t const readBack1 = readParallelOutput();
+        ParallelInShiftRegisterDriver_::enableClock();
+        ParallelInShiftRegisterDriver_::clearShiftRegister();
 
-//        ShiftRegisterDriver_::showShiftRegister();
-//        uint8_t const readBack2 = readParallelOutput();
+        // function under test
+        ParallelInShiftRegisterDriver_::loadParallelToShiftregister();
 
-//        if ( readBack0 == readBack1 && readBack1 != readBack2 )
-//        {
-//            testSuccess = true;
-//        }
+        writeParallelInput(0x00);
 
-//        ShiftRegisterDriver_::clearShiftRegister();
-//        ShiftRegisterDriver_::showShiftRegister();
-//        ShiftRegisterDriver_::disableOutput();
-//        return testSuccess;
-//    }
+        bool parallelLoadDisabled = checkInvertedParallelLoad(AvrInputOutput::HIGH);
 
-//    static bool testDisableOutput()
-//    {
-//        bool testSuccess = false;
+        uint8_t shiftregisterContent = 0xff;
+        ParallelInShiftRegisterDriver_::shiftOutBits(&shiftregisterContent);
 
-//        ShiftRegisterDriver_::disableOutput();
-//        uint8_t data = 0x00 - 1;
-//        bool outputOk = true;
-//        do
-//        {
-//            data++;
-//            ShiftRegisterDriver_::shiftInBits(&data);
-//            ShiftRegisterDriver_::showShiftRegister();
-//            uint8_t const readBack0 = readParallelOutput();
-//            if (0xff != readBack0) // the internal pullups of the tester lead to HIGH for unconnected shiftregister pins.
-//            {
-//                outputOk = false;
-//            }
-//        }
-//        while (0xff != data && outputOk);
-//        if (outputOk)
-//        {
-//            testSuccess = true;
-//        }
 
-//        ShiftRegisterDriver_::clearShiftRegister();
-//        ShiftRegisterDriver_::showShiftRegister();
-//        return testSuccess;
-//    }
+        if ((writtenData == data) && parallelLoadDisabled && (data == shiftregisterContent))
+        {
+            testSuccess = true;
+        }
 
-//    static bool testEnableOutput()
-//    {
-//        bool testSuccess = false;
-//        ShiftRegisterDriver_::disableOutput();
-//        uint8_t const readBack0 = readParallelOutput();
+        ParallelInShiftRegisterDriver_::turnOn();
+        return testSuccess;
+    }
 
-//        uint8_t const data = 0xaa;
-//        ShiftRegisterDriver_::shiftInBits(&data);
-//        ShiftRegisterDriver_::showShiftRegister();
-//        ShiftRegisterDriver_::enableOutput();
-//        uint8_t const readBack1 = readParallelOutput();
-//        // the internal pull-ups measuring the parallel outputs lead to 0xff for disabled outputs
-//        if ( 0xff == readBack0 && 0xaa == readBack1)
-//        {
-//            testSuccess = true;
-//        }
+    static bool testClearShiftRegister()
+    {
+        bool testSuccess = false;
+        writeParallelInput(0x55);
+        ParallelInShiftRegisterDriver_::loadParallelToShiftregister();
+        writeParallelInput(0x00);
 
-//        ShiftRegisterDriver_::disableOutput();
-//        ShiftRegisterDriver_::clearShiftRegister();
-//        ShiftRegisterDriver_::showShiftRegister();
-//        return testSuccess;
-//    }
+        ParallelInShiftRegisterDriver_::enableClock();
+        ParallelInShiftRegisterDriver_::disableParallelLoad();
 
-//    static bool testSerialOutput()
-//    {
-//        bool testSuccess = false;
+        // function under test
+        ParallelInShiftRegisterDriver_::clearShiftRegister();
 
-//        uint8_t data = 0x00 - 1;
-//        bool outputOk = true;
-//        do
-//        {
-//            data++;
-//            // MSB shifted in first
-//            ShiftRegisterDriver_::shiftInBits(&data);
+        bool readBack1 = checkInvertedParallelLoad(AvrInputOutput::HIGH);
+        readBack1 = readBack1 && checkSerialOutput(AvrInputOutput::LOW);
+        readBack1 = readBack1 && checkInvertedSerialOutput(AvrInputOutput::HIGH);
+        readBack1 = readBack1 && checkSerialInput(AvrInputOutput::LOW);
 
-//            uint8_t readBack = 0x00;
-//            ShiftRegisterDriver_::shiftOutBits(&readBack);
+        uint8_t shiftregisterContent = 0xff;
+        ParallelInShiftRegisterDriver_::shiftOutBits(&shiftregisterContent);
 
-//            bool const readSuccess = (data == readBack);
-//            if (!readSuccess)
-//            {
-//                outputOk = false;
-//            }
-//        }
-//        while (0xff != data && outputOk);
-//        if (outputOk)
-//        {
-//            testSuccess = true;
-//        }
 
-//        ShiftRegisterDriver_::clearShiftRegister();
-//        ShiftRegisterDriver_::showShiftRegister();
-//        return testSuccess;
-//    }
+        if (readBack1 && (0x00 == shiftregisterContent))
+        {
+            testSuccess = true;
+        }
 
+        ParallelInShiftRegisterDriver_::turnOn();
+        return testSuccess;
+    }
+
+    static bool testShiftInBits()
+    {
+        bool testSuccess = false;
+        writeParallelInput(0x00);
+        ParallelInShiftRegisterDriver_::loadParallelToShiftregister();
+
+        ParallelInShiftRegisterDriver_::enableClock();
+        ParallelInShiftRegisterDriver_::disableParallelLoad();
+
+        uint8_t const data = 0xaa;
+        // function under test
+        ParallelInShiftRegisterDriver_::shiftInBits(&data);
+
+        bool readBack1 = checkInvertedParallelLoad(AvrInputOutput::HIGH);
+        readBack1 = readBack1 && checkSerialOutput(AvrInputOutput::HIGH);
+        readBack1 = readBack1 && checkInvertedSerialOutput(AvrInputOutput::LOW);
+        readBack1 = readBack1 && checkSerialInput(AvrInputOutput::LOW);
+
+        uint8_t shiftregisterContent = 0xff;
+        ParallelInShiftRegisterDriver_::shiftOutBits(&shiftregisterContent);
+
+
+        if ((data == shiftregisterContent) && readBack1)
+        {
+            testSuccess = true;
+        }
+
+        ParallelInShiftRegisterDriver_::turnOn();
+        return testSuccess;
+    }
+
+    static bool testShiftOutBits()
+    {
+        bool testSuccess = false;
+        uint8_t const inputData = 0x55;
+        writeParallelInput(inputData);
+        ParallelInShiftRegisterDriver_::loadParallelToShiftregister();
+        writeParallelInput(0x00);
+
+        SerialInput::clearPort();
+        ParallelInShiftRegisterDriver_::enableClock();
+        ParallelInShiftRegisterDriver_::disableParallelLoad();
+
+        uint8_t data = 0xaa;
+        // function under test
+        ParallelInShiftRegisterDriver_::shiftOutBits(&data);
+
+        bool readBack1 = checkInvertedParallelLoad(AvrInputOutput::HIGH);
+        readBack1 = readBack1 && checkSerialOutput(AvrInputOutput::LOW);
+        readBack1 = readBack1 && checkInvertedSerialOutput(AvrInputOutput::HIGH);
+        readBack1 = readBack1 && checkSerialInput(AvrInputOutput::LOW);
+
+        if ((inputData == data) && readBack1)
+        {
+            testSuccess = true;
+        }
+
+        ParallelInShiftRegisterDriver_::turnOn();
+        return testSuccess;
+    }
+
+    // show results
     static void showTestResult(TestResult const testResult)
     {
         turnOnDevice();

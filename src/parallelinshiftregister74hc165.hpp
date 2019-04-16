@@ -98,12 +98,12 @@ public:
 
     static bool parallelLoadEnabled()
     {
-        return (AvrInputOutput::HIGH == InvertedParallelLoad_::readPin());
+        return (AvrInputOutput::LOW == InvertedParallelLoad_::readPin());
     }
 
     static bool clockEnabled()
     {
-        return (AvrInputOutput::HIGH == InvertedClockEnable_::readPin());
+        return (AvrInputOutput::LOW == InvertedClockEnable_::readPin());
     }
 
     // Please note that is does not make much sense calling the following methods
@@ -121,11 +121,13 @@ public:
         ShiftRegister_::clearShiftRegister();
     }
 
+    // in = into the shift register
     static void shiftInBits(uint8_t const * const bitStreamArray)
     {
         ShiftRegister_::template shiftInBits<ShiftRegister_::LENGTH>(bitStreamArray);
     }
 
+    // out = out of the shift register
     static void shiftOutBits(uint8_t * const bitStreamArray)
     {
         ShiftRegister_::template shiftOutBits<ShiftRegister_::LENGTH>(bitStreamArray);
