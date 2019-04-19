@@ -1,0 +1,3 @@
+[submodule "src/ArduinoDrivers"]
+	path = src/ArduinoDrivers
+	url = https://github.com/JohannesWilde/ArduinoDrivers.git

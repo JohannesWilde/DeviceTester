@@ -5,16 +5,16 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "arduinouno.hpp"
+#include "ArduinoDrivers/arduinouno.hpp"
 #include "devicetester.hpp"
 
-//#include "rslatchcd4043b.hpp"
+//#include "ArduinoDrivers/rslatchcd4043b.hpp"
 //#include "rslatchcd4043btester.hpp"
 
-//#include "shiftregister74hc595.hpp"
+//#include "ArduinoDrivers/shiftregister74hc595.hpp"
 //#include "shiftregister74hc595tester.hpp"
 
-#include "parallelinshiftregister74hc165.hpp"
+#include "ArduinoDrivers/parallelinshiftregister74hc165.hpp"
 #include "parallelinshiftregister74hc165tester.hpp"
 
 int main()

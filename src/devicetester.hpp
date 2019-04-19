@@ -3,8 +3,8 @@
 
 #include <stdint.h>
 #include <util/delay.h>
-#include "avrinputoutput.hpp"
-#include "avrpin.hpp"
+#include "ArduinoDrivers/avrinputoutput.hpp"
+#include "ArduinoDrivers/avrpin.hpp"
 
 
 template<typename ButtonPin_,

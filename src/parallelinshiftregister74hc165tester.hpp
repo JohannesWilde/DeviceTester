@@ -2,8 +2,8 @@
 #define PARALLELINSHIFTREGISTER74HC165TESTER_HPP
 
 #include "devicetester.hpp"
-#include "avrinputoutput.hpp"
-#include "avrpin.hpp"
+#include "ArduinoDrivers/avrinputoutput.hpp"
+#include "ArduinoDrivers/avrpin.hpp"
 
 template< typename Button_,
           typename Led_,

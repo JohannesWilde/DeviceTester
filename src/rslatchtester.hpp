@@ -2,9 +2,9 @@
 #define RSLATCHTESTER_HPP
 
 #include "devicetester.hpp"
-#include "avrinputoutput.hpp"
-#include "avrpin.hpp"
-#include "dummytypes.hpp"
+#include "ArduinoDrivers/avrinputoutput.hpp"
+#include "ArduinoDrivers/avrpin.hpp"
+#include "ArduinoDrivers/dummytypes.hpp"
 
 template< typename Button_,
           typename Led_,
