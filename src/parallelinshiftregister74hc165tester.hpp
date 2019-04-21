@@ -296,7 +296,6 @@ public:
         bool readBack1 = true;
         readBack1 = readBack1 && checkShiftRegisterClock(AvrInputOutput::LOW);
         readBack1 = readBack1 && checkInvertedParallelLoad(AvrInputOutput::HIGH);
-        readBack1 = readBack1 && checkShiftRegisterClock(AvrInputOutput::LOW);
         readBack1 = readBack1 && checkSerialInput(AvrInputOutput::LOW);
         readBack1 = readBack1 && checkSerialOutput(AvrInputOutput::LOW);
         readBack1 = readBack1 && checkInvertedSerialOutput(AvrInputOutput::HIGH);
