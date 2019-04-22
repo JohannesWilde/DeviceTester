@@ -4,6 +4,8 @@
 #include "devicetester.hpp"
 #include "ArduinoDrivers/avrinputoutput.hpp"
 #include "ArduinoDrivers/avrpin.hpp"
+#include "shiftregistertester.hpp"
+#include "ArduinoDrivers/shiftregister.hpp"
 
 template< typename Button_,
           typename Led_,
@@ -57,6 +59,16 @@ protected:
                         ParallelInput3_,
                         typename ParallelInShiftRegisterDriver_::InvertedClockEnable,
                         Vcc_> DeviceTester_;
+
+    typedef ShiftRegisterTester<Button_,
+                                Led_,
+                                Gnd_,
+                                Vcc_,
+                                ShiftRegister<ParallelInShiftRegisterDriver_::LENGTH,
+                                                typename ParallelInShiftRegisterDriver_::SerialInput,
+                                                typename ParallelInShiftRegisterDriver_::ShiftRegisterClock,
+                                                typename ParallelInShiftRegisterDriver_::SerialOutput>
+                                > ShiftRegisterTester_;
 public:
     // make the pins publically available
     typedef ParallelInShiftRegisterDriver_ ParallelInShiftRegisterDriver;
@@ -184,7 +196,8 @@ public:
             loadParallelToShiftregister(false),
             clearShiftRegister(false),
             shiftInBits(false),
-            shiftOutBits(false)
+            shiftOutBits(false),
+            shiftRegisterResult()
         {
             // intentionally left empty
         }
@@ -201,6 +214,7 @@ public:
         bool clearShiftRegister : 1;
         bool shiftInBits : 1;
         bool shiftOutBits : 1;
+        typename ShiftRegisterTester_::TestResult shiftRegisterResult;
     };
 
     static TestResult test()
@@ -227,6 +241,8 @@ public:
         testResult.shiftInBits = testShiftInBits();
         testResult.shiftOutBits = testShiftOutBits();
 
+        testResult.shiftRegisterResult = testShiftRegister();
+
         // set test success
         if (testResult.turnOff &&
             testResult.turnOn &&
@@ -239,7 +255,8 @@ public:
             testResult.clockEnabled &&
             testResult.clearShiftRegister &&
             testResult.shiftInBits &&
-            testResult.shiftOutBits)
+            testResult.shiftOutBits &&
+            testResult.shiftRegisterResult.success)
         {
             testResult.success = true;
         }
@@ -588,6 +605,17 @@ public:
         return testSuccess;
     }
 
+    static typename ShiftRegisterTester_::TestResult testShiftRegister()
+    {
+        DeviceTester_::DevicePin0::setType(AvrInputOutput::OUTPUT_HIGH); // disable parallel load
+        DeviceTester_::DevicePin14::setType(AvrInputOutput::OUTPUT_LOW); // enable clock
+
+        typename ShiftRegisterTester_::TestResult shiftRegisterTestResult = ShiftRegisterTester_::test();
+
+        ParallelInShiftRegisterDriver_::turnOn();
+        return shiftRegisterTestResult;
+    }
+
     // show results
     static void showTestResult(TestResult const testResult)
     {
@@ -625,6 +653,10 @@ public:
         if (testResult.shiftInBits && testResult.shiftOutBits)
         {
             DeviceTester_::DevicePin13::setPort();
+        }
+        if (testResult.success)
+        {
+            DeviceTester_::DevicePin9::setPort();
         }
 
         DeviceTester_::waitForButtonPressAndRelease();

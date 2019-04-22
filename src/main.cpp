@@ -14,10 +14,8 @@
 //#include "ArduinoDrivers/shiftregister74hc595.hpp"
 //#include "shiftregister74hc595tester.hpp"
 
-//#include "ArduinoDrivers/parallelinshiftregister74hc165.hpp"
-//#include "parallelinshiftregister74hc165tester.hpp"
-#include "ArduinoDrivers/shiftregister.hpp"
-#include "shiftregistertester.hpp"
+#include "ArduinoDrivers/parallelinshiftregister74hc165.hpp"
+#include "parallelinshiftregister74hc165tester.hpp"
 
 int main()
 {
@@ -102,57 +100,33 @@ int main()
 //    }
 
 
-//    typedef ParallelInShiftRegister74HC165<8,
-//            deviceTester::DevicePin0,
-//            deviceTester::DevicePin1,
-//            deviceTester::DevicePin6,
-//            deviceTester::DevicePin8,
-//            deviceTester::DevicePin14,
-//            deviceTester::DevicePin9> parallelInShiftRegister;
-//    typedef ParallelInShiftRegister74HC165Tester<deviceTester::ButtonPin,
-//                                       deviceTester::LedPin,
-//                                       deviceTester::DevicePin2,
-//                                       deviceTester::DevicePin3,
-//                                       deviceTester::DevicePin4,
-//                                       deviceTester::DevicePin5,
-//                                       deviceTester::DevicePin7,
-//                                       deviceTester::DevicePin10,
-//                                       deviceTester::DevicePin11,
-//                                       deviceTester::DevicePin12,
-//                                       deviceTester::DevicePin13,
-//                                       deviceTester::DevicePin15,
-//                                       parallelInShiftRegister> parallelInShiftRegisterTester;
-//    parallelInShiftRegisterTester::initialize();
-//    parallelInShiftRegister::initialize();
-
-//    while (true)
-//    {
-//        parallelInShiftRegisterTester::waitForButtonPressAndRelease();
-//        parallelInShiftRegisterTester::TestResult testResult = parallelInShiftRegisterTester::test();
-//        parallelInShiftRegisterTester::showTestResult(testResult);
-//    }
-
-
-    typedef ShiftRegister<8,
-                          deviceTester::DevicePin9,
-                          deviceTester::DevicePin1,
-                          deviceTester::DevicePin8> shiftRegister;
-    typedef ShiftRegisterTester<deviceTester::ButtonPin,
-                                deviceTester::LedPin,
-                                deviceTester::DevicePin7,
-                                deviceTester::DevicePin15,
-                                shiftRegister> shiftRegisterTester;
-    shiftRegisterTester::initialize();
-    shiftRegister::initialize();
-
-    deviceTester::DevicePin0::setType(AvrInputOutput::OUTPUT_HIGH); // disable parallel load at 165
-    deviceTester::DevicePin14::setType(AvrInputOutput::OUTPUT_LOW); // enable clock at 165
+    typedef ParallelInShiftRegister74HC165<8,
+            deviceTester::DevicePin0,
+            deviceTester::DevicePin1,
+            deviceTester::DevicePin6,
+            deviceTester::DevicePin8,
+            deviceTester::DevicePin14,
+            deviceTester::DevicePin9> parallelInShiftRegister;
+    typedef ParallelInShiftRegister74HC165Tester<deviceTester::ButtonPin,
+                                       deviceTester::LedPin,
+                                       deviceTester::DevicePin2,
+                                       deviceTester::DevicePin3,
+                                       deviceTester::DevicePin4,
+                                       deviceTester::DevicePin5,
+                                       deviceTester::DevicePin7,
+                                       deviceTester::DevicePin10,
+                                       deviceTester::DevicePin11,
+                                       deviceTester::DevicePin12,
+                                       deviceTester::DevicePin13,
+                                       deviceTester::DevicePin15,
+                                       parallelInShiftRegister> parallelInShiftRegisterTester;
+    parallelInShiftRegisterTester::initialize();
+    parallelInShiftRegister::initialize();
 
     while (true)
     {
-        shiftRegisterTester::waitForButtonPressAndRelease();
-        shiftRegisterTester::TestResult testResult = shiftRegisterTester::test();
-        shiftRegisterTester::showTestResult(testResult);
+        parallelInShiftRegisterTester::waitForButtonPressAndRelease();
+        parallelInShiftRegisterTester::TestResult testResult = parallelInShiftRegisterTester::test();
+        parallelInShiftRegisterTester::showTestResult(testResult);
     }
-
 }
